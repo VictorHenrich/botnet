@@ -1,5 +1,4 @@
 from services.managers.manager import Manager
-from services.websocket.client_socket import ClientSocket
 
 
 __URL_SOCKET__: str = "ws://localhost:6000"

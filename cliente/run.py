@@ -2,7 +2,7 @@ from services import server_client
 
 
 @server_client.start
-def carregar_alvos():
+def load_targets():
     import targets
     import listeners
 
