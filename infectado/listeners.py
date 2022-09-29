@@ -15,5 +15,6 @@ def run_manager(data):
 
     client.manager_main.execute(
         objetoData.module,
+        objetoData.args
         *objetoData.targets
     )

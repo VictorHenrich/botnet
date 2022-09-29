@@ -1,7 +1,9 @@
+from typing import Any, Optional
 from .abstract_manager import AbstractManager
+from abc import ABC, abstractmethod
 
 
-class ManagerTarget(AbstractManager):
+class ManagerTarget(AbstractManager, ABC):
     name: str
     debug: bool = False
 
@@ -21,5 +23,6 @@ class ManagerTarget(AbstractManager):
     def debug(self) -> bool:
         return self.__debug
 
-    def execute(self):
+    @abstractmethod
+    def execute(self, data: Optional[Any]):
         pass

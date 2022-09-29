@@ -1,4 +1,4 @@
-from typing import Mapping, Sequence
+from typing import Any, Mapping, Optional, Sequence
 from .abstract_manager import AbstractManager
 from .manager import Manager
 
@@ -19,10 +19,10 @@ class ManagerMain(AbstractManager):
         for manager in managers:
             self.__managers[manager.name] = manager
 
-    def execute(self, manager_name: str, *targets_name: Sequence[str]):
+    def execute(self, manager_name: str, data: Optional[Any], *targets_name: Sequence[str]):
         for manager in self.__managers.values():
             if manager.name.upper() == manager_name.upper():
-                manager.execute(*targets_name)
+                manager.execute(data, *targets_name)
                 return
 
         raise Exception('Manager not found!')
