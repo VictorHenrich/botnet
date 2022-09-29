@@ -1,14 +1,14 @@
 from abc import ABC, abstractmethod
-from socketio import AsyncClientNamespace
+from socketio import ClientNamespace
 
 
-class Controller(AsyncClientNamespace, ABC):
+class Controller(ClientNamespace, ABC):
     name: str
 
     @abstractmethod
-    async def on_connect(self) -> None:
+    def on_connect(self) -> None:
         pass
 
     @abstractmethod
-    async def on_disconnect(self) -> None:
+    def on_disconnect(self) -> None:
         pass
