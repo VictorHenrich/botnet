@@ -1,4 +1,4 @@
-from typing import Mapping, Sequence, Type
+from typing import Any, Mapping, Optional, Sequence, Type
 
 from .abstract_manager import AbstractManager
 from .manager_target import ManagerTarget
@@ -21,10 +21,10 @@ class Manager(AbstractManager):
         for target in targets:
             self.__targets[target.name] = target()
 
-    def execute(self, *targets: Sequence[str]):
+    def execute(self, data: Optional[Any], *targets: Sequence[str]):
         for target in self.__targets.values():
             if target.name in targets:
-                target.execute()
+                target.execute(data)
 
 
     
