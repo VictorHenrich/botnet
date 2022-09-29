@@ -1,7 +1,7 @@
 from selenium.webdriver import Edge
 from pathlib import Path
 
-from services import server_client
+from services import client
 from services.managers.manager_target import ManagerTarget
 
 
@@ -17,4 +17,5 @@ class RunBrowser(ManagerTarget):
             navegador.get('https://www.youtube.com/watch?v=xT1gflziHaQ')
 
 
-server_client.manager_main.get_manager('automacao_navegador').append_targets(RunBrowser)
+
+client.manager_main.get_manager('automacao_navegador').append_targets(RunBrowser)

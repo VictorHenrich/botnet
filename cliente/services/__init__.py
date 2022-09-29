@@ -3,8 +3,8 @@ from .configs import (
     __MANAGERS__
 )
 
-from .client.server_client import ServerClient
-from .utils.create_server_client import create_server_client
+from .client import Client
+from .utils.create_client import create_client
 
 
-server_client: ServerClient = create_server_client(__URL_SOCKET__, __MANAGERS__)
+client: Client = create_client(__URL_SOCKET__, __MANAGERS__)
