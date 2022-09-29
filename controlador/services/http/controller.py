@@ -1,21 +1,21 @@
 from aiohttp.web import View
 from abc import ABC
 
-from .responses import ResponseNotFound
+from .responses import ResponseNotFound, Response
 
 
 class Controller(View, ABC):
-    async def get(self):
+    async def get(self) -> Response:
         return ResponseNotFound()
 
-    async def post(self):
+    async def post(self) -> Response:
         return ResponseNotFound()
 
-    async def put(self):
+    async def put(self) -> Response:
         return ResponseNotFound()
 
-    async def delete(self):
+    async def delete(self) -> Response:
         return ResponseNotFound()
 
-    async def patch(self):
+    async def patch(self) -> Response:
         return ResponseNotFound()

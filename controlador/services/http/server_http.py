@@ -4,22 +4,28 @@ from aiohttp.web import (
     view,
     run_app
 )
-from typing import Mapping, Any, Union
+from typing import Mapping, Any, Sequence, Union
 from pathlib import Path
+
+from sqlalchemy import values
 
 from .controller import Controller
 
 
 class ServerHttp:
+    __props_run_server: Sequence[str] = 'host', 'port'
+
     def __init__(
         self,
         host: str,
-        port: int,
+        port: Union[int, str],
+        secret_key: str,
         debug: bool = False
     ) -> None:
         self.__configs: Mapping[str, Any] = {
             "host": host,
-            "port": port
+            "port": port,
+            "secret_key": secret_key
         }
 
         self.__app: Application = Application(debug=debug)
@@ -39,7 +45,12 @@ class ServerHttp:
         return self.__routes
 
     def start(self) -> None:
-        run_app(self.__app, **self.__configs)
+        self.__app.add_routes(self.__routes)
 
-    def append_route(self, path: Union[Path, str], controller: Controller) -> None:
-        view(str(path), controller)
+        c: Mapping[str, Any] = {
+            prop: value
+            for prop, value in self.__configs.items()
+            if prop in ServerHttp.__props_run_server
+        }
+
+        run_app(self.__app, **c)

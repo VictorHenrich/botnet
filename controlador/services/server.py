@@ -3,16 +3,19 @@ import asyncio
 
 from .http.server_http import ServerHttp
 from .websocket.server_socket import ServerSocket
+from .database import Database
 
 
 class Server:
     def __init__(
         self,
+        database: Database,
         http: ServerHttp,
         websocket: ServerSocket 
     ) -> None:
         self.__http: ServerHttp = http
         self.__websocket: ServerSocket = websocket
+        self.__database: Database = database
         self.__listeners: list[Callable[[None], None]] = []
 
     @property
@@ -22,6 +25,10 @@ class Server:
     @property
     def websocket(self) -> ServerSocket:
         return self.__websocket
+
+    @property
+    def database(self) -> Database:
+        return self.__database
 
     def start(self, function: Callable[[None], None]) -> Callable[[None], None]:
         self.__listeners.append(function)

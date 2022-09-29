@@ -3,10 +3,10 @@ from services.http.server_http import ServerHttp
 
 
 class ServerSocket:
-    def __init__(self, app: ServerHttp) -> None:
+    def __init__(self, http: ServerHttp) -> None:
         self.__socket: AsyncServer = AsyncServer()
 
-        self.__socket.attach(app)
+        self.__socket.attach(http.app)
 
     @property
     def socket(self) -> AsyncServer:

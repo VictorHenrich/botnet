@@ -1,0 +1,2 @@
+from .controle_bots_controller import ControleBotsController
+from .autenticacao_controller import AutenticacaoController
