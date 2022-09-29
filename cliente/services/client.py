@@ -1,10 +1,11 @@
-from typing import Callable
+from typing import Callable, Coroutine, Optional
+import asyncio
 
 from services.managers.manager_main import ManagerMain
 from services.websocket.client_socket import ClientSocket
 
 
-class ServerClient:
+class Client:
     def __init__(
         self,
         manager_main: ManagerMain,
@@ -27,9 +28,13 @@ class ServerClient:
 
         return function
 
-    def start_server(self) -> None:
+    def start_client(self) -> None:
         for function in self.__listeners:
-            function()
+            result: Optional[Coroutine] = function()
+
+            if isinstance(result, Coroutine):
+                asyncio.run(result)
+
 
 
 
