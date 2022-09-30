@@ -18,9 +18,11 @@ class ClientSocket:
 
     def start(self) -> None:
         self.__socket.connect(self.__url)
+        print(f' CLIENT CONNECT IN {self.__url} '.center(100, '-'))
 
     def close(self) -> None:
         self.__socket.disconnect()
+        print(f' CLIENT DISCONNECT IN {self.__url} '.center(100, '-'))
 
     def register_controller(self, controller: Controller):
         self.__socket.register_namespace(controller(controller.name))
