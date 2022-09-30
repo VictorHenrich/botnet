@@ -1,7 +1,9 @@
-from typing import Any, Mapping, Type
+from typing import Type
 from dataclasses import dataclass
 import pyautogui
+from time import sleep
 
+from services import client
 from services.managers import ManagerTarget
 
 
@@ -11,9 +13,20 @@ class DataAutomateNotepad:
 
 
 class OpenNotepad(ManagerTarget):
-    name: str = "rodar_navegador"
+    name: str = "abrir_bloco_notas"
     debug: bool = False
     data_class: Type = DataAutomateNotepad
 
     def execute(self, data: DataAutomateNotepad) -> None:
-        pass
+        pyautogui.press('win')
+        pyautogui.write('notepad')
+        pyautogui.press('enter')
+        
+        for letter in data.text:
+            pyautogui.press(letter)
+            sleep(0.05)
+
+
+
+client.manager_main.get_manager('automacao_so').append_targets(OpenNotepad)
+
