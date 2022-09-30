@@ -24,7 +24,12 @@ class Manager(AbstractManager):
     def execute(self, data: Optional[Any], *targets: Sequence[str]):
         for target in self.__targets.values():
             if target.name in targets:
-                target.execute(data)
+                object_data: Optional[Any] = \
+                    target.data_class(**data) \
+                        if data and target.data_class \
+                        else data
+
+                target.execute(object_data)
 
 
     

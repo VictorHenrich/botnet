@@ -1,4 +1,4 @@
-from typing import Any, Optional
+from typing import Any, Optional, Type
 from .abstract_manager import AbstractManager
 from abc import ABC, abstractmethod
 
@@ -6,10 +6,12 @@ from abc import ABC, abstractmethod
 class ManagerTarget(AbstractManager, ABC):
     name: str
     debug: bool = False
+    data_class: Optional[Type] = None
 
     def __init__(self) -> None:
         self.__name = self.__class__.name
         self.__debug = self.__class__.debug
+        self.__data_class = self.__class__.data_class
 
 
         if not self.__name:
@@ -23,6 +25,10 @@ class ManagerTarget(AbstractManager, ABC):
     def debug(self) -> bool:
         return self.__debug
 
+    @property
+    def data_class(self) -> Optional[Type]:
+        return self.__data_class
+
     @abstractmethod
-    def execute(self, data: Optional[Any]):
+    def execute(self, data: Optional[Any]) -> None:
         pass
