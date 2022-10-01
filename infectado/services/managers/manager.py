@@ -1,4 +1,5 @@
 from typing import Any, Mapping, Optional, Sequence, Type
+from multiprocessing import Process
 
 from .abstract_manager import AbstractManager
 from .manager_target import ManagerTarget
@@ -22,14 +23,28 @@ class Manager(AbstractManager):
             self.__targets[target.name] = target()
 
     def execute(self, data: Optional[Any], *targets: Sequence[str]):
-        for target in self.__targets.values():
-            if target.name in targets:
-                object_data: Optional[Any] = \
+        list_targets: list[ManagerTarget] = [
+            target
+            for target in self.__targets.values()
+            if target.name in targets
+        ]
+
+        processes: list[Process] = [
+            Process(
+                target=target.execute,
+                args=(
                     target.data_class(**data) \
                         if data and target.data_class \
                         else data
+                    ,
+                )
+            )
 
-                target.execute(object_data)
+            for target in list_targets
+        ]
+
+        [process.start() for process in processes]
+        [process.join() for process in processes]
 
 
     
