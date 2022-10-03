@@ -1,5 +1,5 @@
 from typing import Any, Mapping, Optional, Sequence, Type
-from multiprocessing import Process
+from threading import Thread
 
 from .abstract_manager import AbstractManager
 from .manager_target import ManagerTarget
@@ -29,8 +29,8 @@ class Manager(AbstractManager):
             if target.name in targets
         ]
 
-        processes: list[Process] = [
-            Process(
+        threads: list[Thread] = [
+            Thread(
                 target=target.execute,
                 args=(
                     target.data_class(**data) \
@@ -43,8 +43,8 @@ class Manager(AbstractManager):
             for target in list_targets
         ]
 
-        [process.start() for process in processes]
-        [process.join() for process in processes]
+        [thread.start() for thread in threads]
+        [thread.join() for thread in threads]
 
 
     
