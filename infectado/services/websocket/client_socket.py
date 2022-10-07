@@ -1,5 +1,5 @@
 from socketio import Client
-
+from typing import Type, Callable
 from services.websocket import Controller
 
 
@@ -17,6 +17,12 @@ class ClientSocket:
     @property
     def socket(self) -> Client:
         return self.__socket
+
+    def on(self, event_name: str) -> Callable[[Type[Controller]], None]:
+        def wrapper(controller_class: Type[Controller]) -> None:
+            self.__socket.register_namespace(controller_class(event_name))
+
+        return wrapper
 
     def start(self) -> None:
         self.__socket.connect(self.__url, namespaces=self.__namespaces)
