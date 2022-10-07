@@ -19,7 +19,7 @@ class ManagerMain(AbstractManager):
         for manager in managers:
             self.__managers[manager.name] = manager
 
-    def execute(self, manager_name: str, data: Optional[Any], *targets_name: Sequence[str]):
+    def execute(self, manager_name: str, data: Optional[Any], *targets_name: Sequence[str]) -> None:
         for manager in self.__managers.values():
             if manager.name.upper() == manager_name.upper():
                 manager.execute(data, *targets_name)

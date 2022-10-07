@@ -22,7 +22,7 @@ class Manager(AbstractManager):
         for target in targets:
             self.__targets[target.name] = target()
 
-    def execute(self, data: Optional[Any], *targets: Sequence[str]):
+    def execute(self, data: Optional[Any], *targets: Sequence[str]) -> None:
         list_targets: list[ManagerTarget] = [
             target
             for target in self.__targets.values()
