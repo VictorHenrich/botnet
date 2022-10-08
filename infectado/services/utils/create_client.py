@@ -4,9 +4,9 @@ from services.websocket.client_socket import ClientSocket
 
 
 
-def create_client(url: str, managers: list[str]) -> Client:
+def create_client(url: str, managers: list[str], namespaces: list[str] = []) -> Client:
     manager_main: ManagerMain = ManagerMain()
-    client_socket: ClientSocket = ClientSocket(url)
+    client_socket: ClientSocket = ClientSocket(url, namespaces)
 
     managers_: list[Manager] = [
         Manager(manager_name)

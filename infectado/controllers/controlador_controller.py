@@ -13,7 +13,7 @@ class ObjectData:
 
 @client.websocket.on('/bots')
 class ControladorController(Controller):
-    def on_controlador(self, data):
+    def on_controle(self, data):
         objetoData: ObjectData = ObjectData(**data)
 
         client.manager_main.execute(
