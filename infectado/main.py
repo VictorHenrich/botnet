@@ -2,11 +2,11 @@ from services import client
 
 
 @client.start
-async def load_targets():
+def load_targets():
     import targets
-    import listeners
+    import controllers
 
-    await client.websocket.start()
+    client.websocket.start()
 
 
 client.start_client()

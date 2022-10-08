@@ -1,24 +1,21 @@
-from socketio import AsyncServer
-from aiohttp.web import Application, run_app, RouteTableDef, Response
-from time import sleep
-
-routes = RouteTableDef()
-
-@routes.get('/fazer')
-async def rodar(request):
-    await sio.emit('on_controller', {'module': 'OK'})
-
-    return Response(text="TUDO BEM")
+from services import server
 
 
-app = Application()
-sio = AsyncServer()
+@server.start
+def run_api():
+    import controllers
 
-sio.attach(app)
-app.add_routes(routes)
+    server.http.start()
+
+#@server.start
+def migrate_database():
+    import models
+
+    server.database.migrate()
 
 
-run_app(app, host='localhost', port=6000)
+server.start_server()
+
 
 
 

@@ -1,4 +1,5 @@
 from typing import Any, Mapping, Optional, Sequence, Type
+from threading import Thread
 
 from .abstract_manager import AbstractManager
 from .manager_target import ManagerTarget
@@ -21,10 +22,29 @@ class Manager(AbstractManager):
         for target in targets:
             self.__targets[target.name] = target()
 
-    def execute(self, data: Optional[Any], *targets: Sequence[str]):
-        for target in self.__targets.values():
-            if target.name in targets:
-                target.execute(data)
+    def execute(self, data: Optional[Any], *targets: Sequence[str]) -> None:
+        list_targets: list[ManagerTarget] = [
+            target
+            for target in self.__targets.values()
+            if target.name in targets
+        ]
+
+        threads: list[Thread] = [
+            Thread(
+                target=target.execute,
+                args=(
+                    target.data_class(**data) \
+                        if data and target.data_class \
+                        else data
+                    ,
+                )
+            )
+
+            for target in list_targets
+        ]
+
+        [thread.start() for thread in threads]
+        [thread.join() for thread in threads]
 
 
     

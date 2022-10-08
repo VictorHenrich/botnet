@@ -1,5 +1,5 @@
-from socketio import AsyncClient
-
+from socketio import Client
+from typing import Type, Callable
 from services.websocket import Controller
 
 
@@ -7,20 +7,27 @@ from services.websocket import Controller
 class ClientSocket:
     def __init__(
         self,
-        url_connection: str
+        url_connection: str,
+        namespaces: list[str] = []
     ) -> None:
-        self.__socket: AsyncClient = AsyncClient()
+        self.__socket: Client = Client()
         self.__url: str = url_connection
+        self.__namespaces: list[str] = namespaces
 
     @property
-    def socket(self) -> AsyncClient:
+    def socket(self) -> Client:
         return self.__socket
 
-    async def start(self) -> None:
-        await self.__socket.connect(self.__url)
+    def on(self, event_name: str) -> Callable[[Type[Controller]], None]:
+        def wrapper(controller_class: Type[Controller]) -> None:
+            self.__socket.register_namespace(controller_class(event_name))
 
-    async def close(self) -> None:
-        await self.__socket.disconnect()
+        return wrapper
 
-    def register_controller(self, controller: Controller):
-        self.__socket.register_namespace(controller(controller.name))
+    def start(self) -> None:
+        self.__socket.connect(self.__url, namespaces=self.__namespaces)
+        print(f' CLIENT CONNECT IN {self.__url} '.center(100, '-'))
+
+    def close(self) -> None:
+        self.__socket.disconnect()
+        print(f' CLIENT DISCONNECT IN {self.__url} '.center(100, '-'))
