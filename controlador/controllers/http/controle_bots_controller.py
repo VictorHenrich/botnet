@@ -31,8 +31,8 @@ class ControleBotsController(Controller):
     @ValidacaoCorpoRequisicaoMiddleware.apply(ModelControle)
     async def post(self, auth: Usuarios, body_request: ModelControle) -> Response:
         try:
-            await server.websocket.socket.emit('on_controller', body_request.__dict__)
-
+            await server.websocket.socket.emit('controle', body_request.__dict__, namespace="/bots")
+            
         except Exception as error:
             return ResponseFailure(data=str(error))
 
