@@ -1,17 +1,18 @@
 from dataclasses import dataclass
-from typing import Type
+from typing import Any, Mapping, Optional, Type
 from pathlib import Path
 
 from services import client
 from services.managers.manager_target import ManagerTarget
+from targets.web.dom import DOM
 from .drives import Drives, AbstractDrive
-
 
 
 @dataclass
 class DataAutomateBrowser:
     link: str
     browser: str
+    dom: Optional[Mapping[str, Any]] = None
 
 
 
@@ -29,6 +30,11 @@ class RunBrowser(ManagerTarget):
 
         with object_drive.class_(path_browser) as browser:
             browser.get(data.link)
+
+            if data.dom:
+                dom: DOM = DOM(**data.dom)
+
+                dom.execute()
 
 
 
