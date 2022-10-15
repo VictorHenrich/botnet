@@ -1,11 +1,12 @@
 from abc import ABC, abstractmethod
-from typing import Any, Mapping, Type
+from typing import Any, Mapping, Optional, Sequence, Type
 from selenium.webdriver.remote.webelement import WebElement
 
 
 
 class AbstractDOMOperation(ABC):
     name: str
+    parameter_type: Optional[Type[Any]] = None
 
     def __init__(self) -> None:
         operator_name: str = self.__class__.name
@@ -16,6 +17,26 @@ class AbstractDOMOperation(ABC):
     @abstractmethod
     def operate(self, web_element: WebElement, param: Any) -> None:
         pass
+
+    def start(self, web_element: WebElement, param: Any) -> None:
+        parameter_class: Type[Any] = self.__class__.parameter_type
+
+        if parameter_class and isinstance(param, parameter_class):
+            if type(param) is Mapping:
+                self.operate(web_element, parameter_class(**param))
+                return
+
+            elif type(param) is Sequence:
+                self.operate(web_element, parameter_class(*param))
+                return
+
+            else:
+                self.operate(web_element, param)
+                return
+
+        self.operate(web_element, param)
+
+
 
 
 

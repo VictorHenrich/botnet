@@ -29,7 +29,7 @@ class DOMOperator:
 @dataclass
 class DOMOptions:
     run_first_main: bool = False
-    wait_elements: int = 10
+    wait_elements: int = 5
 
 
 class DOM:
@@ -55,13 +55,13 @@ class DOM:
         if self.__operator:
             self.__operator\
                 .type\
-                .operate(
+                .start(
                     element or self.__webdriver, 
                     self.__operator.param
                 )
 
     def activate(self) -> None:
-        #self.__webdriver.implicitly_wait(self.__options.wait_elements)
+        self.__webdriver.implicitly_wait(self.__options.wait_elements)
 
         element: WebElement = \
             self.__selector \
