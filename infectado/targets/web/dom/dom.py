@@ -10,10 +10,13 @@ from . import (
 )
 
 
+
+
 @dataclass
 class DOMSelector:
     type: AbstractDOMSelection
     value: str
+
 
 
 @dataclass
@@ -22,11 +25,11 @@ class DOMOperator:
     param: Any
 
 
+
 @dataclass
 class DOMOptions:
     run_first_main: bool = False
-
-
+    wait_elements: int = 10
 
 
 class DOM:
@@ -38,7 +41,7 @@ class DOM:
         *children: Sequence[DOM],
         **options: Mapping[str, Any]
     ) -> None:
-        self.__webdriver: webdriver
+        self.__webdriver: WebDriver = webdriver
         self.__selector: DOMSelector = selector
         self.__operator: DOMOperator = operator
         self.__children: list[DOM] = list(children)
@@ -46,22 +49,24 @@ class DOM:
 
     def __run_children(self):
         for child in self.__children:
-            child.start()
+            child.activate()
 
     def __run_operator(self, element: Optional[WebElement]) -> None:
-        self.__operator\
-            .type\
-            .operate(
-                element or self.__webdriver, 
-                self.__operator.param
-            )
+        if self.__operator:
+            self.__operator\
+                .type\
+                .operate(
+                    element or self.__webdriver, 
+                    self.__operator.param
+                )
 
-    def start(self) -> None:
+    def activate(self) -> None:
+        #self.__webdriver.implicitly_wait(self.__options.wait_elements)
+
         element: WebElement = \
             self.__selector \
                 .type \
                 .get_by(self.__webdriver, self.__selector.value)
-
 
         if self.__options.run_first_main:
             self.__run_operator(element)

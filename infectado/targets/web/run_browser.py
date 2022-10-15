@@ -22,7 +22,7 @@ class RunBrowser(ManagerTarget):
             browser.get(data.link)
 
             if data.dom:
-                data.dom.constructor(browser).start()
+                data.dom.constructor(browser).activate()
 
 
 

@@ -40,13 +40,13 @@ class DataFactoryDOM:
                 for child in children or []
             ]
 
-    def __get_selector(self) -> DOMSelector:
+    def __get_selection(self) -> DOMSelector:
         selection: AbstractDOMSelection = \
             DOMSelections.get_selection(self.__selector.type)
 
         return DOMSelector(selection, self.__selector.value)
 
-    def __get_operator(self) -> Optional[DOMOperator]:
+    def __get_operation(self) -> Optional[DOMOperator]:
         if not self.__operator:
             return None
 
@@ -57,11 +57,11 @@ class DataFactoryDOM:
         return DOMOperator(operation, self.__operator.param)
 
     def constructor(self, webdriver: WebDriver) -> DOM:
-        selector: DOMSelector = self.__get_selector()
-        operator: Optional[DOMOperator] = self.__get_operator()
+        selector: DOMSelector = self.__get_selection()
+        operator: Optional[DOMOperator] = self.__get_operation()
 
         children: list[DOM] = [
-            child.adapt(webdriver)
+            child.constructor(webdriver)
             for child in self.__children
         ]
 
