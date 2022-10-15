@@ -1,43 +1,77 @@
 from __future__ import annotations
-from typing import Any, Optional
+from typing import Any, Optional, Sequence, Mapping
+from dataclasses import dataclass
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.remote.webelement import WebElement
 
 from . import (
     AbstractDOMSelection,
-    AbstractDOMOperation,
-    DOMOperations,
-    DOMSelections
+    AbstractDOMOperation
 )
+
+
+@dataclass
+class DOMSelector:
+    type: AbstractDOMSelection
+    value: str
+
+
+@dataclass
+class DOMOperator:
+    type: AbstractDOMOperation
+    param: Any
+
+
+@dataclass
+class DOMOptions:
+    run_first_main: bool = False
+
+
 
 
 class DOM:
     def __init__(
         self,
         webdriver: WebDriver,
-        selector_type: str,
-        selector_value: str,
-        operator_type: str,
-        operator_value: Any,
-        next_dom: Optional[DOM]
+        selector: DOMSelector,
+        operator: Optional[DOMOperator] = None,
+        *children: Sequence[DOM],
+        **options: Mapping[str, Any]
     ) -> None:
-        self.__selector_type: AbstractDOMSelection = DOMSelections.get_selection(selector_type)
-        self.__operator_type: AbstractDOMOperation = DOMOperations.get_operation(operator_type)
+        self.__webdriver: webdriver
+        self.__selector: DOMSelector = selector
+        self.__operator: DOMOperator = operator
+        self.__children: list[DOM] = list(children)
+        self.__options: DOMOptions = DOMOptions(**options)
 
-        self.__selector_value: str = selector_value
-        self.__operator_value: Any = operator_value
+    def __run_children(self):
+        for child in self.__children:
+            child.start()
 
-        self.__webdriver: WebDriver = webdriver
-        self.__next: Optional[DOM] = next_dom
+    def __run_operator(self, element: Optional[WebElement]) -> None:
+        self.__operator\
+            .type\
+            .operate(
+                element or self.__webdriver, 
+                self.__operator.param
+            )
+
+    def start(self) -> None:
+        element: WebElement = \
+            self.__selector \
+                .type \
+                .get_by(self.__webdriver, self.__selector.value)
 
 
-    def execute(self) -> None:
-        element: WebElement = self.__selector_type.get_by(self.__webdriver, self.__selector_value)
+        if self.__options.run_first_main:
+            self.__run_operator(element)
+            self.__run_children()
 
-        if not element:
-            raise Exception('Element DOM not localized!')
+        else:
+            self.__run_children()
+            self.__run_operator(element)
 
-        self.__operator_type.operate(element or self.__webdriver, self.__operator_value)
+        
 
-        if self.__next:
-            self.__next.execute()
+
+    
