@@ -25,56 +25,31 @@ class DOMOperator:
     param: Any
 
 
-
-@dataclass
-class DOMOptions:
-    run_first_main: bool = False
-    wait_elements: int = 5
-
-
 class DOM:
     def __init__(
         self,
         webdriver: WebDriver,
         selector: DOMSelector,
-        operator: Optional[DOMOperator] = None,
-        *children: Sequence[DOM],
-        **options: Mapping[str, Any]
+        operator: DOMOperator
     ) -> None:
         self.__webdriver: WebDriver = webdriver
         self.__selector: DOMSelector = selector
         self.__operator: DOMOperator = operator
-        self.__children: list[DOM] = list(children)
-        self.__options: DOMOptions = DOMOptions(**options)
 
-    def __run_children(self):
-        for child in self.__children:
-            child.activate()
-
-    def __run_operator(self, element: Optional[WebElement]) -> None:
-        if self.__operator:
-            self.__operator\
-                .type\
-                .start(
-                    element or self.__webdriver, 
-                    self.__operator.param
-                )
-
+    
     def activate(self) -> None:
-        self.__webdriver.implicitly_wait(self.__options.wait_elements)
-
         element: WebElement = \
             self.__selector \
                 .type \
                 .get_by(self.__webdriver, self.__selector.value)
 
-        if self.__options.run_first_main:
-            self.__run_operator(element)
-            self.__run_children()
-
-        else:
-            self.__run_children()
-            self.__run_operator(element)
+        self.__operator\
+            .type\
+            .start(
+                self.__webdriver,
+                element,
+                self.__operator.param
+            )
 
         
 

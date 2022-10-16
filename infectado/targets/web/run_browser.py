@@ -22,7 +22,8 @@ class RunBrowser(ManagerTarget):
             browser.get(data.link)
 
             if data.dom:
-                data.dom.constructor(browser).activate()
+                for data_dom in data.dom:
+                    data_dom.constructor(browser).activate()
 
 
 
