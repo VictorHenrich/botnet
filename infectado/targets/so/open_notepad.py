@@ -21,6 +21,8 @@ class OpenNotepad(ManagerTarget):
         pyautogui.press('win')
         pyautogui.write('notepad')
         pyautogui.press('enter')
+
+        sleep(2)
         
         for letter in data.text:
             pyautogui.press(letter)
