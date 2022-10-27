@@ -1,9 +1,12 @@
-from services.managers.manager import Manager
+
+from services.utils.env import Env
 
 
-__URL_SOCKET__: str = "ws://localhost:6000"
+data_env: dict = Env.get_values()
 
-__MANAGERS__: list[Manager] = [
-    Manager('automacao_navegador'),
-    Manager('automacao_so')
-]
+
+__URL_SOCKET__: str = data_env['URL_CONNECTION_SERVER']
+
+__NAMESPACES__: list[str] = Env.locate_keys(data_env, 'NAMESPACE')
+
+__MANAGERS__: list[str] = Env.locate_keys(data_env, 'MANAGER')
