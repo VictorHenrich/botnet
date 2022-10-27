@@ -1,4 +1,4 @@
 from .web import (
-    rodar_navegador
+    run_browser
 )
 
