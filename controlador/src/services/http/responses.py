@@ -1,97 +1,92 @@
 from typing import Any, Mapping, Optional
 from aiohttp.web import Response
+from abc import ABC
+from pydantic import validate_arguments
 import json
 
 
-header_default: Mapping[str, str] = {
-    "Content-Type": "application/json"
-}
 
-
-
-class ResponseSuccess(Response):
+class AbstractResponse(Response, ABC):
+    __header_default: Mapping[str, str] = {
+        "Content-Type": "application/json"
+    }
+    
+    @validate_arguments
     def __init__(
         self,
-        status_code: int = 200,
-        data: Optional[Any] = None,
-        headers: Mapping[str, str] = header_default
+        data: Optional[Any],
+        message_default: str,
+        status_code: int,
+        headers: Optional[Mapping[str, str]] = None
     ) -> None:
         response_data: Mapping[str, Any] = {
             "status": status_code,
-            "message": "OK"
+            "message": message_default
+        }
+
+        response_headers: Mapping[str, str] = {
+            **self.__class__.__header_default,
+            **(headers or {})
         }
 
         if data is not None:
-            response_data['result'] = data
+            self.__data['result'] = data
+
 
         super().__init__(
             body=json.dumps(response_data),
-            status=status_code,
-            headers={**header_default, **headers}
+            headers=response_headers,
+            status=status_code
         )
 
+    
 
-class ResponseFailure(Response):
+class ResponseSuccess(AbstractResponse):
     def __init__(
-        self,
-        status_code: int = 500,
-        data: Optional[Any] = None,
-        headers: Mapping[str, str] = header_default
+        self, 
+        data: Optional[Any], 
+        headers: Optional[Mapping[str, str]] = None
     ) -> None:
-        response_data: Mapping[str, Any] = {
-            "status": status_code,
-            "message": "ERRO"
-        }
+        message_default: str = "OK"
+        status_code: int = 200
 
-        if data is not None:
-            response_data['result'] = data
-
-        super().__init__(
-            body=json.dumps(response_data),
-            status=status_code,
-            headers={**header_default, **headers}
-        )
+        super().__init__(data, message_default, status_code, headers)
 
 
-class ResponseNotFound(Response):
+
+class ResponseFailure(AbstractResponse):
     def __init__(
-        self,
-        status_code: int = 404,
-        data: Optional[Any] = None,
-        headers: Mapping[str, str] = header_default
+        self, 
+        data: Optional[Any], 
+        headers: Optional[Mapping[str, str]] = None
     ) -> None:
-        response_data: Mapping[str, Any] = {
-            "status": status_code,
-            "message": "ROTA NÃO LOCALIZADA"
-        }
+        message_default: str = "ERRO"
+        status_code: int = 500
 
-        if data is not None:
-            response_data['result'] = data
-
-        super().__init__(
-            body=json.dumps(response_data),
-            status=status_code,
-            headers={**header_default, **headers}
-        )
+        super().__init__(data, message_default, status_code, headers)
 
 
-class ResponseInauthorized(Response):
+
+class ResponseNotFound(AbstractResponse):
     def __init__(
-        self,
-        status_code: int = 401,
-        data: Optional[Any] = None,
-        headers: Mapping[str, str] = header_default
+        self, 
+        data: Optional[Any], 
+        headers: Optional[Mapping[str, str]] = None
     ) -> None:
-        response_data: Mapping[str, Any] = {
-            "status": status_code,
-            "message": "NÃO AUTORIZADO"
-        }
+        message_default: str = "ROTA NÃO LOCALIZADA"
+        status_code: int = 404
 
-        if data is not None:
-            response_data['result'] = data
+        super().__init__(data, message_default, status_code, headers)
 
-        super().__init__(
-            body=json.dumps(response_data),
-            status=status_code,
-            headers={**header_default, **headers}
-        )
+
+
+class ResponseInauthorized(AbstractResponse):
+    def __init__(
+        self, 
+        data: Optional[Any], 
+        headers: Optional[Mapping[str, str]] = None
+    ) -> None:
+        message_default: str = "NÃO AUTORIZADO"
+        status_code: int = 401
+
+        super().__init__(data, message_default, status_code, headers)

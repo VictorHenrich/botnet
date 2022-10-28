@@ -1,35 +1,24 @@
 from typing import Callable, Coroutine, Optional
 import asyncio
+from pydantic import BaseModel, validate_arguments
 
 from services.managers.manager_main import ManagerMain
 from services.websocket.client_socket import ClientSocket
 
 
-class Client:
-    def __init__(
-        self,
-        manager_main: ManagerMain,
-        websocket: ClientSocket
-    ) -> None:
-        self.__manager_main: ManagerMain = manager_main
-        self.__websocket: ClientSocket = websocket
-        self.__listeners: list[Callable[[None], None]] = []
+class Client(BaseModel):
+    manager_main: ManagerMain
+    websocket: ClientSocket
+    listeners: list[Callable[[None], None]] = []
 
-    @property
-    def manager_main(self) -> ManagerMain:
-        return self.__manager_main
-
-    @property
-    def websocket(self) -> ClientSocket:
-        return self.__websocket
-
+    @validate_arguments
     def start(self, function: Callable[[None], None])  -> Callable[[None], None]:
-        self.__listeners.append(function)
+        self.listeners.append(function)
 
         return function
 
     def start_client(self) -> None:
-        for function in self.__listeners:
+        for function in self.listeners:
             result: Optional[Coroutine] = function()
 
             if isinstance(result, Coroutine):

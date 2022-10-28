@@ -1,9 +1,9 @@
 from __future__ import annotations
-from typing import Any, Optional, Sequence, Mapping
-from dataclasses import dataclass
+from typing import Any, Mapping, Sequence
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.remote.webelement import WebElement
-
+from pydantic import BaseModel
+from abc import ABC, abstractmethod
 from . import (
     AbstractDOMSelection,
     AbstractDOMOperation
@@ -11,44 +11,40 @@ from . import (
 
 
 
-
-@dataclass
-class DOMSelector:
+class DOMSelector(BaseModel):
     type: AbstractDOMSelection
     value: str
 
 
 
-@dataclass
-class DOMOperator:
+class DOMOperator(BaseModel):
     type: AbstractDOMOperation
     param: Any
 
 
-class DOM:
-    def __init__(
-        self,
-        webdriver: WebDriver,
-        selector: DOMSelector,
-        operator: DOMOperator
-    ) -> None:
-        self.__webdriver: WebDriver = webdriver
-        self.__selector: DOMSelector = selector
-        self.__operator: DOMOperator = operator
+class AbstractDOM(ABC):
+    @abstractmethod
+    def active(self, *args: Sequence[Any], kwargs: Mapping[str, Any]) -> None:
+        pass
 
+
+class DOM(AbstractDOM, BaseModel):
+    webdriver: WebDriver
+    selector: DOMSelector
+    operator: DOMOperator
     
-    def activate(self) -> None:
+    def active(self) -> None:
         element: WebElement = \
-            self.__selector \
+            self.selector \
                 .type \
-                .get_by(self.__webdriver, self.__selector.value)
+                .get_by(self.webdriver, self.selector.value)
 
-        self.__operator\
+        self.operator\
             .type\
             .start(
-                self.__webdriver,
+                self.webdriver,
                 element,
-                self.__operator.param
+                self.operator.param
             )
 
         

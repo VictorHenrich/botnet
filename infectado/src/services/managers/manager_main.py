@@ -1,26 +1,24 @@
 from typing import Any, Mapping, Optional, Sequence
+from pydantic import validate_arguments, BaseModel
 from .abstract_manager import AbstractManager
 from .manager import Manager
 
 
-class ManagerMain(AbstractManager):
+class ManagerMain(AbstractManager, BaseModel):
+    managers: Mapping[str, Manager] = {}
 
-    def __init__(self):
-        self.__managers: Mapping[str, Manager] = {}
-
-    @property
-    def managers(self) -> Mapping[str, Manager]:
-        return self.__managers
-
+    @validate_arguments
     def get_manager(self, manager_name: str) -> Manager:
-        return self.__managers[manager_name]
+        return self.managers[manager_name]
 
+    @validate_arguments
     def append_managers(self, *managers: Sequence[Manager]) -> None:
         for manager in managers:
-            self.__managers[manager.name] = manager
+            self.managers[manager.name] = manager
 
+    @validate_arguments
     def execute(self, manager_name: str, data: Optional[Any], *targets_name: Sequence[str]) -> None:
-        for manager in self.__managers.values():
+        for manager in self.managers.values():
             if manager.name.upper() == manager_name.upper():
                 manager.execute(data, *targets_name)
                 return

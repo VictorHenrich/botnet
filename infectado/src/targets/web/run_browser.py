@@ -18,12 +18,7 @@ class RunBrowser(ManagerTarget):
     def execute(self, data: DataAutomateBrowser):
         path_browser: str = str(RunBrowser.__executable_path_default_browser / data.webdriver.name_executable)
 
-        with data.webdriver.get_browser(path_browser) as browser:
-            browser.get(data.link)
-
-            if data.dom:
-                for data_dom in data.dom:
-                    data_dom.constructor(browser).activate()
+        data.active(path_browser)
 
 
 
