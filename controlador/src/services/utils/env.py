@@ -4,7 +4,7 @@ from typing import Mapping, Union, Optional
 
 
 class Env:
-    __path_default, = Path.cwd() / '..' / Path.glob('*.env')
+    __path_default, = Path.cwd().glob('*.env')
 
     @classmethod
     def get_values(cls, path: Optional[Union[Path, str]] = None) -> Mapping[str, Optional[str]]:
