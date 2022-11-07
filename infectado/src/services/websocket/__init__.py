@@ -1,2 +1,2 @@
 from .controller import Controller
-from .client_socket import ClientSocket
+from .socket_client import SocketClient

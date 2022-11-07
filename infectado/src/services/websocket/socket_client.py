@@ -1,16 +1,18 @@
 from socketio import Client
 from typing import Type, Callable
 from services.websocket import Controller
-from pydantic import validate_arguments, BaseModel
 
 
 
-class ClientSocket(BaseModel):
-    url_connection: str
-    namespaces: list[str]
-    socket: Client = Client()
+class SocketClient:
+    def __init__(
+        self,
+        url_connection: str,
+        namespaces: list[str] = []
+    ) -> None:
+        self.__url: str = url_connection
+        self.__namespaces: list[str] = namespaces
 
-    @validate_arguments
     def on(self, event_name: str) -> Callable[[Type[Controller]], None]:
         def wrapper(controller_class: Type[Controller]) -> None:
             self.socket.register_namespace(controller_class(event_name))

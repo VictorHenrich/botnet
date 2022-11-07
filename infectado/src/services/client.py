@@ -1,17 +1,29 @@
-from typing import Callable, Coroutine, Optional
+from typing import Callable, Coroutine, Optional, Mapping, Any
 import asyncio
-from pydantic import BaseModel, validate_arguments
 
-from services.managers.manager_main import ManagerMain
-from services.websocket.client_socket import ClientSocket
+from services.managers import MainManager
+from services.websocket import SocketClient
 
 
-class Client(BaseModel):
-    manager_main: ManagerMain
-    websocket: ClientSocket
+class Client:
     listeners: list[Callable[[None], None]] = []
 
-    @validate_arguments
+    def __init__(
+        self,
+        main_manager: MainManager,
+        websocket: SocketClient
+    ) -> None:
+        self.__manager: MainManager = main_manager
+        self.__websocket: SocketClient = websocket
+
+    @property
+    def manager(self) -> MainManager:
+        return self.__manager
+
+    @property
+    def websocket(self) -> SocketClient:
+        return self.__websocket
+
     def start(self, function: Callable[[None], None])  -> Callable[[None], None]:
         self.listeners.append(function)
 
@@ -23,6 +35,17 @@ class Client(BaseModel):
 
             if isinstance(result, Coroutine):
                 asyncio.run(result)
+
+
+
+class ClientFactory:
+    @classmethod
+    def create(
+        cls,
+        managers: list[str],
+        websocket: Mapping[str, Any]
+    ) -> Client:
+        pass
 
 
 

@@ -1,7 +1,6 @@
 from typing import Any, Mapping, Optional
 from aiohttp.web import Response
 from abc import ABC
-from pydantic import validate_arguments
 import json
 
 
@@ -11,7 +10,6 @@ class AbstractResponse(Response, ABC):
         "Content-Type": "application/json"
     }
     
-    @validate_arguments
     def __init__(
         self,
         data: Optional[Any],
@@ -30,7 +28,7 @@ class AbstractResponse(Response, ABC):
         }
 
         if data is not None:
-            self.__data['result'] = data
+            response_data['result'] = data
 
 
         super().__init__(

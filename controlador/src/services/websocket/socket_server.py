@@ -1,12 +1,12 @@
 from typing import Callable, Type
 from socketio import AsyncServer
 
-from services.http.server_http import ServerHttp
+from services.http import HttpServer
 from .controller import Controller
 
 
-class ServerSocket:
-    def __init__(self, http: ServerHttp) -> None:
+class SocketServer:
+    def __init__(self, http: HttpServer) -> None:
         self.__socket: AsyncServer = AsyncServer()
 
         self.__socket.attach(http.app)

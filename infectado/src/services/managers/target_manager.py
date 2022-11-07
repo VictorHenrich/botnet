@@ -3,7 +3,7 @@ from .abstract_manager import AbstractManager
 from abc import ABC, abstractmethod
 
 
-class ManagerTarget(AbstractManager, ABC):
+class TargetManager(AbstractManager, ABC):
     name: str
     debug: bool = False
     data_class: Optional[Type] = None

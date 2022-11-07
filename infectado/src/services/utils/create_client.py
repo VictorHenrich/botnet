@@ -1,6 +1,6 @@
 from services.client import Client
-from services.managers.manager_main import ManagerMain, Manager
-from services.websocket.client_socket import ClientSocket
+from infectado.src.services.managers.main_manager import ManagerMain, Manager
+from infectado.src.services.websocket.socket_client import ClientSocket
 
 
 

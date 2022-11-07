@@ -1,18 +1,12 @@
 from aiohttp.web import (
     Application, 
     RouteTableDef, 
-    view,
     run_app
 )
 from typing import Mapping, Any, Sequence, Union
-from pathlib import Path
-
-from sqlalchemy import values
-
-from .controller import Controller
 
 
-class ServerHttp:
+class HttpServer:
     __props_run_server: Sequence[str] = 'host', 'port'
 
     def __init__(
@@ -50,7 +44,7 @@ class ServerHttp:
         c: Mapping[str, Any] = {
             prop: value
             for prop, value in self.__configs.items()
-            if prop in ServerHttp.__props_run_server
+            if prop in HttpServer.__props_run_server
         }
 
         run_app(self.__app, **c)

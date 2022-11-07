@@ -1,33 +1,29 @@
 from typing import Any, Mapping, Optional, Sequence, Type
 from threading import Thread
-from pydantic import BaseModel, validator, validate_arguments
 
 from .abstract_manager import AbstractManager
-from .manager_target import ManagerTarget
+from .target_manager import TargetManager
 
 
-class Manager(AbstractManager, BaseModel):
-    name: str
-    targets: Mapping[str, ManagerTarget] = {}
+class Manager(AbstractManager):
+    def __init__(self, name: str) -> None:
+        self.__name: str = name
+        self.__targets: Mapping[str, TargetManager] = {}
 
-    @validator('targets', pre=True)
-    def handle_targerts(cls, value: Sequence[Type[ManagerTarget]]) -> Mapping[str, ManagerTarget]:
-        if not value:
-            return {}
+    @property
+    def name(self) -> str:
+        return self.__name
 
-        return {
-            target.name: target()
-            for target in value
-        }
+    @property
+    def targets(self) -> Mapping[str, TargetManager]:
+        return self.__targets
 
-    @validate_arguments
-    def append_targets(self, *targets: Sequence[Type[ManagerTarget]]) -> None:
+    def append_targets(self, *targets: Sequence[Type[TargetManager]]) -> None:
         for target in targets:
             self.targets[target.name] = target()
 
-    @validate_arguments
     def execute(self, data: Optional[Any], *targets: Sequence[str]) -> None:
-        list_targets: list[ManagerTarget] = [
+        list_targets: list[TargetManager] = [
             target
             for target in self.targets.values()
             if target.name in targets

@@ -2,9 +2,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.engine import create_engine, Engine
 from sqlalchemy.orm.session import Session, sessionmaker
 from sqlalchemy.orm.decl_api import declarative_base, DeclarativeMeta
-
-from typing import Any, Mapping, Type, Union
-from pathlib import Path
+from typing import Any, Mapping, Type
 
 
 
@@ -12,7 +10,7 @@ from pathlib import Path
 class Database:
     def __init__(
         self,
-        url: Union[Path, str],
+        url: str,
         debug: bool = False
     ) -> None:
         self.__engine: Engine = create_engine(url, echo=debug)
