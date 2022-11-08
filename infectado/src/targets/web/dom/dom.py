@@ -28,6 +28,7 @@ class AbstractDOM(ABC):
         pass
 
 
+@dataclass
 class DOM(AbstractDOM):
     webdriver: WebDriver
     selector: DOMSelector
