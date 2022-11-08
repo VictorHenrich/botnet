@@ -2,7 +2,7 @@ from __future__ import annotations
 from typing import Any, Mapping, Sequence
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.remote.webelement import WebElement
-from pydantic import BaseModel
+from dataclasses import dataclass
 from abc import ABC, abstractmethod
 from . import (
     AbstractDOMSelection,
@@ -10,14 +10,14 @@ from . import (
 )
 
 
-
-class DOMSelector(BaseModel):
+@dataclass
+class DOMSelector:
     type: AbstractDOMSelection
     value: str
 
 
-
-class DOMOperator(BaseModel):
+@dataclass
+class DOMOperator:
     type: AbstractDOMOperation
     param: Any
 
@@ -28,7 +28,7 @@ class AbstractDOM(ABC):
         pass
 
 
-class DOM(AbstractDOM, BaseModel):
+class DOM(AbstractDOM):
     webdriver: WebDriver
     selector: DOMSelector
     operator: DOMOperator

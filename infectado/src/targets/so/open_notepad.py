@@ -3,7 +3,7 @@ from dataclasses import dataclass
 import pyautogui
 from time import sleep
 
-from services import client
+from start import client
 from services.managers import ManagerTarget
 
 
@@ -30,5 +30,5 @@ class OpenNotepad(ManagerTarget):
 
 
 
-client.manager_main.get_manager('automacao_so').append_targets(OpenNotepad)
+client.managers.get_manager('automacao_so').append_targets(OpenNotepad)
 

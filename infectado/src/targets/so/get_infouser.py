@@ -1,7 +1,7 @@
 import os
 import sys
 
-from services import client
+from start import client
 from services.managers import ManagerTarget
 
 
@@ -21,4 +21,4 @@ class GetInfoUser(ManagerTarget):
 
 
 
-client.manager_main.get_manager('automacao_so').append_targets(ManagerTarget)
+client.managers.get_manager('automacao_so').append_targets(ManagerTarget)

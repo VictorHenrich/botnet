@@ -1,8 +1,8 @@
 from typing import  Type
 from pathlib import Path
 
-from services import client
-from infectado.src.services.managers.target_manager import TargetManager
+from start import client
+from services.managers.target_manager import TargetManager
 from .utils.data_class_runbrowser import DataAutomateBrowser
 
 
@@ -22,4 +22,4 @@ class RunBrowser(TargetManager):
 
 
 
-client.manager_main.get_manager('automacao_navegador').append_targets(RunBrowser)
+client.managers.get_manager('automacao_navegador').append_targets(RunBrowser)

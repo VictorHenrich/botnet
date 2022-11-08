@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from typing import Any, Optional
-from services import client
+from start import client
 from services.websocket import Controller
 
 @dataclass
