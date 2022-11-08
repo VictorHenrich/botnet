@@ -14,8 +14,10 @@ class Controller(AsyncNamespace, ABC):
     def connected_list(self) -> list[str]:
         return self.__connected_list
 
-    async def on_connect(self, socketid: str, environ: Type) -> None:
+    def on_connect(self, socketid: str, environ: Type) -> None:
         self.__connected_list.append(socketid)
 
-    async def on_disconnect(self, socketid: str) -> None:
+    def on_disconnect(self, socketid: str) -> None:
+        if not self.__connected_list: return
+        
         self.__connected_list.remove(socketid)

@@ -16,7 +16,7 @@ class ControladorController(Controller):
     def on_controle(self, data):
         objetoData: ObjectData = ObjectData(**data)
 
-        client.manager_main.execute(
+        client.managers.execute(
             objetoData.module,
             objetoData.args,
             *objetoData.targets

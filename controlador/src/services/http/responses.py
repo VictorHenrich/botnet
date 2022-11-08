@@ -42,7 +42,7 @@ class AbstractResponse(Response, ABC):
 class ResponseSuccess(AbstractResponse):
     def __init__(
         self, 
-        data: Optional[Any], 
+        data: Optional[Any] = None, 
         headers: Optional[Mapping[str, str]] = None
     ) -> None:
         message_default: str = "OK"
@@ -55,7 +55,7 @@ class ResponseSuccess(AbstractResponse):
 class ResponseFailure(AbstractResponse):
     def __init__(
         self, 
-        data: Optional[Any], 
+        data: Optional[Any] = None, 
         headers: Optional[Mapping[str, str]] = None
     ) -> None:
         message_default: str = "ERRO"
@@ -68,7 +68,7 @@ class ResponseFailure(AbstractResponse):
 class ResponseNotFound(AbstractResponse):
     def __init__(
         self, 
-        data: Optional[Any], 
+        data: Optional[Any] = None, 
         headers: Optional[Mapping[str, str]] = None
     ) -> None:
         message_default: str = "ROTA NÃO LOCALIZADA"
@@ -81,7 +81,7 @@ class ResponseNotFound(AbstractResponse):
 class ResponseInauthorized(AbstractResponse):
     def __init__(
         self, 
-        data: Optional[Any], 
+        data: Optional[Any] = None, 
         headers: Optional[Mapping[str, str]] = None
     ) -> None:
         message_default: str = "NÃO AUTORIZADO"

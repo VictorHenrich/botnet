@@ -12,17 +12,30 @@ class SocketClient:
     ) -> None:
         self.__url: str = url_connection
         self.__namespaces: list[str] = namespaces
+        self.__socket: Client = Client(url_connection)
+
+    @property
+    def url(self) -> str:
+        return self.__url
+
+    @property
+    def namespaces(self) -> list[str]:
+        return self.__namespaces
+
+    @property
+    def socket(self) -> Client:
+        return self.__socket
 
     def on(self, event_name: str) -> Callable[[Type[Controller]], None]:
         def wrapper(controller_class: Type[Controller]) -> None:
-            self.socket.register_namespace(controller_class(event_name))
+            self.__socket.register_namespace(controller_class(event_name))
 
         return wrapper
 
     def start(self) -> None:
-        self.socket.connect(self.__url, namespaces=self.__namespaces)
+        self.__socket.connect(self.__url, namespaces=self.__namespaces)
         print(f' CLIENT CONNECT IN {self.__url} '.center(100, '-'))
 
     def close(self) -> None:
-        self.socket.disconnect()
+        self.__socket.disconnect()
         print(f' CLIENT DISCONNECT IN {self.__url} '.center(100, '-'))

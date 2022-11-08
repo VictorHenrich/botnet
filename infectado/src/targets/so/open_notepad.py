@@ -4,7 +4,7 @@ import pyautogui
 from time import sleep
 
 from start import client
-from services.managers import ManagerTarget
+from services.managers import TargetManager
 
 
 @dataclass
@@ -12,7 +12,7 @@ class DataAutomateNotepad:
     text: str
 
 
-class OpenNotepad(ManagerTarget):
+class OpenNotepad(TargetManager):
     name: str = "abrir_bloco_notas"
     debug: bool = False
     data_class: Type = DataAutomateNotepad

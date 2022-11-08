@@ -65,18 +65,14 @@ class DataFactoryDOM:
 
 
 
-class DataAutomateBrowser(AbstractDOM, BaseModel):
-    link: str
-    browser: AbstractDrive
-    dom: list[DataFactoryDOM] = []
-
+class DataAutomateBrowser(AbstractDOM):
     def __init__(
         self,
         browser: str,
         dom: list[Mapping[str, Any]],
         link: str
     ) -> None:
-        self.__browser: AbstractDrive = Drives.get_drive(browser)
+        self.__webdriver: AbstractDrive = Drives.get_drive(browser)
 
         self.__dom: list[DataFactoryDOM] = [
             DataFactoryDOM(**d)
@@ -86,8 +82,8 @@ class DataAutomateBrowser(AbstractDOM, BaseModel):
         self.__link: str = link
 
     @property
-    def browser(self) -> AbstractDrive:
-        return self.__browser
+    def webdriver(self) -> AbstractDrive:
+        return self.__webdriver
 
     @property
     def dom(self) -> list[DataFactoryDOM]:
@@ -100,7 +96,7 @@ class DataAutomateBrowser(AbstractDOM, BaseModel):
     def active(self, path_drive: Union[Path, str]) -> None:
         path_drive_: str = str(path_drive)
 
-        driver_browser: WebDriver = self.__browser.get_browser(path_drive_)
+        driver_browser: WebDriver = self.__webdriver.get_browser(path_drive_)
 
         driver_browser.get(self.__link)
 
