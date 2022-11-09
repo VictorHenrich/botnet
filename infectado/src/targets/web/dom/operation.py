@@ -31,10 +31,6 @@ class AbstractDOMOperation(ABC):
                 self.operate(web_driver, web_element, parameter_class(*param))
                 return
 
-            else:
-                self.operate(web_driver, web_element, param)
-                return
-
         self.operate(web_driver, web_element, param)
 
 

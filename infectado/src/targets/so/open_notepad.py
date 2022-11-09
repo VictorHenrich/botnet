@@ -1,11 +1,14 @@
-from typing import Type
+from typing import Type, Mapping, Optional
 from dataclasses import dataclass
 import pyautogui
 from time import sleep
 
 from start import client
 from services.managers import TargetManager
+from services.utils import UtilEnv
 
+
+env_value: Mapping[str, Optional[str]] = UtilEnv.get_values()
 
 @dataclass
 class DataAutomateNotepad:
@@ -30,5 +33,8 @@ class OpenNotepad(TargetManager):
 
 
 
-client.managers.get_manager('automacao_so').append_targets(OpenNotepad)
+client\
+    .managers\
+    .get_manager(env_value['MANAGER_AUTOMATE_SO'])\
+    .append_targets(OpenNotepad)
 

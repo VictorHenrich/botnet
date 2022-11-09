@@ -27,10 +27,12 @@ class DataFactoryDOM:
     def __init__(
         self,
         selector: Mapping[str, str],
-        operator: Mapping[str, Any]
+        operator: Mapping[str, Any],
+        wait_time: float = 0
     ) -> None:
         self.__selector: DataDOMSelector = DataDOMSelector(**selector)
         self.__operator: DataDOMOperator = DataDOMOperator(**operator)
+        self.__wait_time: float = wait_time
 
     @property
     def selector(self) -> DataDOMSelector:
@@ -39,6 +41,10 @@ class DataFactoryDOM:
     @property
     def operator(self) -> DataDOMOperator:
         return self.__operator
+
+    @property
+    def wait_time(self) -> float:
+        return self.__wait_time
 
     def __get_selection(self) -> DOMSelector:
         selection: AbstractDOMSelection = \
@@ -60,7 +66,8 @@ class DataFactoryDOM:
         return DOM(
             webdriver,
             selection,
-            operation
+            operation,
+            self.__wait_time
         )
 
 

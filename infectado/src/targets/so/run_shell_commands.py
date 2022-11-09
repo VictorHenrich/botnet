@@ -3,10 +3,15 @@ import shlex
 import sys
 import subprocess
 from dataclasses import dataclass
-from typing import Type, Union
+from typing import Type, Union, Mapping, Optional
 
 from start import client
 from services.managers import TargetManager
+from services.utils import UtilEnv
+
+
+
+env_value: Mapping[str, Optional[str]] = UtilEnv.get_values()
 
 
 @dataclass
@@ -43,4 +48,7 @@ class RunShellCommands(TargetManager):
 
 
 
-client.managers.get_manager('automacao_so').append_targets(RunShellCommands)
+client\
+    .managers\
+    .get_manager(env_value['MANAGER_AUTOMATE_SO'])\
+    .append_targets(RunShellCommands)

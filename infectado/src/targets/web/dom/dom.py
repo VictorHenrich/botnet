@@ -2,6 +2,7 @@ from __future__ import annotations
 from typing import Any, Mapping, Sequence
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.remote.webelement import WebElement
+from time import sleep
 from dataclasses import dataclass
 from abc import ABC, abstractmethod
 from . import (
@@ -33,6 +34,7 @@ class DOM(AbstractDOM):
     webdriver: WebDriver
     selector: DOMSelector
     operator: DOMOperator
+    wait_time: float = 0
     
     def active(self) -> None:
         element: WebElement = \
@@ -47,6 +49,8 @@ class DOM(AbstractDOM):
                 element,
                 self.operator.param
             )
+
+        sleep(self.wait_time)
 
         
 

@@ -1,11 +1,13 @@
-from typing import  Type
+from typing import  Type, Mapping, Optional
 from pathlib import Path
 
 from start import client
 from services.managers.target_manager import TargetManager
 from .utils.data_class_runbrowser import DataAutomateBrowser
+from services.utils import UtilEnv
 
 
+env_value: Mapping[str, Optional[str]] = UtilEnv.get_values()
 
 
 class RunBrowser(TargetManager):
@@ -22,4 +24,7 @@ class RunBrowser(TargetManager):
 
 
 
-client.managers.get_manager('automacao_navegador').append_targets(RunBrowser)
+client\
+    .managers\
+    .get_manager(env_value['MANAGER_AUTOMATE_BROWSER'])\
+    .append_targets(RunBrowser)
