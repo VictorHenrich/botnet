@@ -1,35 +1,45 @@
-import subprocess
+
+import shlex
 import sys
+import subprocess
 from dataclasses import dataclass
-from typing import Type
+from typing import Type, Union
 
 from start import client
 from services.managers import TargetManager
 
 
-
 @dataclass
 class DataCommands:
-    command: str
+    command: Union[str, list[str]]
 
 
 
 class RunShellCommands(TargetManager):
     name: str = "executar_comandos"
     debug: bool = False
-    data_class: Type[DataCommands]
+    data_class: Type[DataCommands] = DataCommands
 
+    def __run_subprocess(self, commands: list[str]) -> None:
+        active_windows_sheel: bool = "WIN" in sys.platform.upper()
 
+        process: subprocess.CompletedProcess = subprocess.run(
+            commands,
+            shell=active_windows_sheel,
+            text=True,
+            stdout=subprocess.PIPE
+        )
+
+        print(f'\n==> {process.stdout}')
 
     def execute(self, data: DataCommands) -> None:
-        args: list[str] = data.command.split()
+        if type(data.command) is list:
+            commands: str = ' && '.join(data.command)
 
-        active_windows_sheel: bool = sys.platform.upper() in "WIN"
+            self.__run_subprocess(shlex.split(commands))
 
-        process: subprocess.CompletedProcess = \
-            subprocess.run(args, capture_output=True, shell=active_windows_sheel)
-
-        client.websocket.socket.emit('return_sheel', process.stdout.decode('utf-8'))
+        else:
+            self.__run_subprocess(shlex.split(data.command))
 
 
 
