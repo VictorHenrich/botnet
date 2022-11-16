@@ -1,3 +1,0 @@
-from .autenticacao import AutenticacaoMiddlware
-from .validacao_corpo_requisicao import ValidacaoCorpoRequisicaoMiddleware
-
