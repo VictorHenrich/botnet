@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-# botnet
-Criação para atividade de Segurança da informação
-=======
 # O QUE É UMA BOTNET?
 <br>
 Uma botnet é uma rede de computadores infectados que podem ser controlados remotamente e forçados a enviar spam, espalhar malware ou preparar ataques de DDoS sem o consentimento dos proprietários do dispositivo. Com o surgimento da internet das coisas a quantidade de dispositivos que podem ser infectados esse tipo de ataque está mais comum do que parece e nas mais diversas máquinas, podendo ser um perigo em potencial para grandes empresas e usuários já que atualmente praticamente tudo está conectado a rede, seja ela interna ou não.
@@ -93,9 +89,3 @@ Qualquer uma das aplicações o seu funcionamento é inicializado através do ar
 
 `python ./src/main.py`
 
-
-
-
-
-
->>>>>>> dev
