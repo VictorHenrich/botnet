@@ -1,4 +1,4 @@
-from services.utils.env import Env
+from server.utils.env import Env
 
 
 data_env: dict = Env.get_values()

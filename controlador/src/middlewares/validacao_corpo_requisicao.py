@@ -1,6 +1,6 @@
 from typing import Mapping, Type, Any
 from aiohttp.web import Request
-from services.http import Middleware
+from server.http import Middleware
 from pydantic import BaseModel, ValidationError
 
 

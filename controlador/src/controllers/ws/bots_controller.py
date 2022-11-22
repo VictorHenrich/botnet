@@ -1,6 +1,6 @@
 from typing import Type
 from start import server
-from services.websocket import Controller
+from server.websocket import Controller
 
 
 @server.websocket.on('/bots')
