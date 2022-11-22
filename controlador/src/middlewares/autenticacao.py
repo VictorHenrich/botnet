@@ -1,11 +1,11 @@
 from aiohttp.web import Request
 from typing import Any, Mapping
-from services.http import Response, ResponseInauthorized
+from server.http import Response, ResponseInauthorized
 from jwt import PyJWT
 from datetime import datetime
 
 from start import server
-from services.http import Middleware
+from server.http import Middleware
 from utils.constantes import (
     __ALGORITHMS_JWT__,
     __PAYLOAD_JWT__

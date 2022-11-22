@@ -1,14 +1,14 @@
 from pathlib import Path
 from dotenv import dotenv_values
-from typing import Mapping, Union, Optional
+from typing import Mapping, Union, Optional, Sequence
 
 
 class Env:
-    __path_default, = Path.cwd().glob('*.env')
+    __path_default: Sequence[Path] = list((Path(__file__) / '..' / '..' / '..' / '..').glob('*.env'))
 
     @classmethod
     def get_values(cls, path: Optional[Union[Path, str]] = None) -> Mapping[str, Optional[str]]:
-        path_: Path = Path(path or cls.__path_default)
+        path_: Path = Path(path or cls.__path_default[0])
 
         if not path_.exists():
             raise Exception('Não foi possível localizar arquivo .env!')

@@ -1,7 +1,7 @@
 from typing import Callable, Type
 from socketio import AsyncServer
 
-from services.http import HttpServer
+from server.http import HttpServer
 from .controller import Controller
 
 
