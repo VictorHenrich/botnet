@@ -2,7 +2,7 @@ from .configs import (
     __MANAGERS__,
     __SOCKET__
 )
-from services import ClientFactory, Client
+from client import ClientFactory, Client
 
 
 

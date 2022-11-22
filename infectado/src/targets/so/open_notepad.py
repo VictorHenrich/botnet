@@ -4,8 +4,8 @@ import pyautogui
 from time import sleep
 
 from start import client
-from services.managers import TargetManager
-from services.utils import UtilEnv
+from client.managers import TargetManager
+from client.utils import UtilEnv
 
 
 env_value: Mapping[str, Optional[str]] = UtilEnv.get_values()

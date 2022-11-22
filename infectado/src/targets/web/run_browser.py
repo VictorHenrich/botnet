@@ -2,9 +2,9 @@ from typing import  Type, Mapping, Optional
 from pathlib import Path
 
 from start import client
-from services.managers.target_manager import TargetManager
+from client.managers.target_manager import TargetManager
 from .utils.data_class_runbrowser import DataAutomateBrowser
-from services.utils import UtilEnv
+from client.utils import UtilEnv
 
 
 env_value: Mapping[str, Optional[str]] = UtilEnv.get_values()
