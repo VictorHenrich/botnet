@@ -1,6 +1,6 @@
 from socketio import Client
 from typing import Type, Callable
-from services.websocket import Controller
+from client.websocket import Controller
 
 
 

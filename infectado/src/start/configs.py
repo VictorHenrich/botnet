@@ -1,4 +1,4 @@
-from services.utils import UtilEnv
+from client.utils import UtilEnv
 
 
 data_env: dict = UtilEnv.get_values()

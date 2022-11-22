@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import Any, Optional
 from start import client
-from services.websocket import Controller
+from client.websocket import Controller
 
 @dataclass
 class ObjectData:

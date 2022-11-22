@@ -1,8 +1,8 @@
 from typing import Callable, Coroutine, Optional, Mapping, Any
 import asyncio
 
-from services.managers import MainManager, Manager
-from services.websocket import SocketClient
+from client.managers import MainManager, Manager
+from client.websocket import SocketClient
 
 
 class Client:
