@@ -3,7 +3,7 @@ from start import client
 
 @client.start
 def load_targets():
-    import targets
+    import tasks
     import controllers
 
     client.websocket.start()

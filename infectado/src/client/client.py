@@ -1,22 +1,22 @@
 from typing import Callable, Coroutine, Optional, Mapping, Any
 import asyncio
 
-from client.managers import MainManager, Manager
+from client.managers import ModuleManager
 from client.websocket import SocketClient
 
 
 class Client:
     def __init__(
         self,
-        main_manager: MainManager,
+        main_manager: ModuleManager,
         websocket: SocketClient
     ) -> None:
-        self.__managers: MainManager = main_manager
+        self.__managers: ModuleManager = main_manager
         self.__websocket: SocketClient = websocket
         self.__listeners: list[Callable[[None], None]] = []
 
     @property
-    def managers(self) -> MainManager:
+    def managers(self) -> ModuleManager:
         return self.__managers
 
     @property
@@ -52,13 +52,13 @@ class ClientFactory:
         return socket_client
 
     @classmethod
-    def __create_managers(cls, data: list[str]) -> MainManager:
-        main_manager: MainManager = MainManager()
+    def __create_managers(cls, data: list[str]) -> ModuleManager:
+        module_manager: ModuleManager = ModuleManager()
         
-        for manager in data:
-            main_manager.append_managers(Manager(manager))
+        for module in data:
+            module_manager.create_task_manager(module)
 
-        return main_manager
+        return module_manager
 
     @classmethod
     def create(
@@ -66,10 +66,10 @@ class ClientFactory:
         managers: list[str],
         websocket: Mapping[str, Any]
     ) -> Client:
-        main_manager: MainManager = cls.__create_managers(managers)
+        module_manager: ModuleManager = cls.__create_managers(managers)
         socket: SocketClient = cls.__create_websocket(websocket)
 
-        return Client(main_manager, socket)
+        return Client(module_manager, socket)
         
 
 

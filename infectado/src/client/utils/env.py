@@ -4,7 +4,7 @@ from typing import Mapping, Union, Optional, Sequence
 
 
 class UtilEnv:
-    __default_path: Sequence = list((Path(__file__) / '..' / '..' / '..' / '..').glob('*.env'))
+    __default_path: Sequence = list(Path.cwd().glob('*.env'))
 
     @classmethod
     def set_default_path(cls, path: Union[str, Path]) -> None:
@@ -18,7 +18,6 @@ class UtilEnv:
             raise Exception('Não foi possível localizar arquivo .env!')
 
         return dotenv_values(str(path_))
-
 
     @classmethod
     def locate_keys(cls, data_env: Mapping[str, Optional[str]], name: str):

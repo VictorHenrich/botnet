@@ -4,18 +4,22 @@ import pyautogui
 from time import sleep
 
 from start import client
-from client.managers import TargetManager
+from client.managers import Task
 from client.utils import UtilEnv
 
 
 env_value: Mapping[str, Optional[str]] = UtilEnv.get_values()
+
+
 
 @dataclass
 class DataAutomateNotepad:
     text: str
 
 
-class OpenNotepad(TargetManager):
+
+@client.managers.add_task(env_value['MANAGER_AUTOMATE_SO'])
+class OpenNotepad(Task):
     name: str = "abrir_bloco_notas"
     debug: bool = False
     data_class: Type = DataAutomateNotepad
@@ -30,11 +34,4 @@ class OpenNotepad(TargetManager):
         for letter in data.text:
             pyautogui.press(letter)
             sleep(0.05)
-
-
-
-client\
-    .managers\
-    .get_manager(env_value['MANAGER_AUTOMATE_SO'])\
-    .append_targets(OpenNotepad)
 

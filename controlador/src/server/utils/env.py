@@ -4,7 +4,7 @@ from typing import Mapping, Union, Optional, Sequence
 
 
 class Env:
-    __path_default: Sequence[Path] = list((Path(__file__) / '..' / '..' / '..' / '..').glob('*.env'))
+    __path_default: Sequence[Path] = list(Path.cwd().glob('*.env'))
 
     @classmethod
     def get_values(cls, path: Optional[Union[Path, str]] = None) -> Mapping[str, Optional[str]]:

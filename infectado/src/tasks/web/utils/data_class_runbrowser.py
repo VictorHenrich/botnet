@@ -5,10 +5,10 @@ from pydantic import BaseModel, validator, validate_arguments
 from selenium.webdriver.remote.webdriver import WebDriver
 from dataclasses import dataclass
 
-from targets.web.dom import DOM, DOMSelector, DOMOperator, AbstractDOM
-from targets.web.dom.operation import AbstractDOMOperation, DOMOperations
-from targets.web.dom.selection import AbstractDOMSelection, DOMSelections
-from targets.web.drives import Drives, AbstractDrive
+from tasks.web.dom import DOM, DOMSelector, DOMOperator, AbstractDOM
+from tasks.web.dom.operation import AbstractDOMOperation, DOMOperations
+from tasks.web.dom.selection import AbstractDOMSelection, DOMSelections
+from tasks.web.drives import Drives, AbstractDrive
 
 
 @dataclass
