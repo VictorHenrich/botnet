@@ -6,7 +6,7 @@ from dataclasses import dataclass
 from typing import Type, Union, Mapping, Optional
 
 from start import client
-from client.managers import TargetManager
+from client.managers import Task
 from client.utils import UtilEnv
 
 
@@ -20,7 +20,8 @@ class DataCommands:
 
 
 
-class RunShellCommands(TargetManager):
+@client.managers.add_task(env_value['MANAGER_AUTOMATE_SO'])
+class RunShellCommands(Task):
     name: str = "executar_comandos"
     debug: bool = False
     data_class: Type[DataCommands] = DataCommands
@@ -45,10 +46,3 @@ class RunShellCommands(TargetManager):
 
         else:
             self.__run_subprocess(shlex.split(data.command))
-
-
-
-client\
-    .managers\
-    .get_manager(env_value['MANAGER_AUTOMATE_SO'])\
-    .append_targets(RunShellCommands)
