@@ -28,7 +28,7 @@ class DataFactoryDOM:
         self,
         selector: Mapping[str, str],
         operator: Mapping[str, Any],
-        wait_time: float = 0
+        wait_time: float = 0,
     ) -> None:
         self.__selector: DataDOMSelector = DataDOMSelector(**selector)
         self.__operator: DataDOMOperator = DataDOMOperator(**operator)
@@ -47,15 +47,18 @@ class DataFactoryDOM:
         return self.__wait_time
 
     def __get_selection(self) -> DOMSelector:
-        selection: AbstractDOMSelection = \
-            DOMSelections.get_selection(self.__selector.type)
+        selection: AbstractDOMSelection = DOMSelections.get_selection(
+            self.__selector.type
+        )
 
         return DOMSelector(selection, self.__selector.value)
 
     def __get_operation(self) -> DOMOperator:
-        operation: AbstractDOMOperation = \
-            DOMOperations.get_operation(self.__operator.type) \
-            if self.__operator else None
+        operation: AbstractDOMOperation = (
+            DOMOperations.get_operation(self.__operator.type)
+            if self.__operator
+            else None
+        )
 
         return DOMOperator(operation, self.__operator.param)
 
@@ -63,28 +66,14 @@ class DataFactoryDOM:
         selection: DOMSelector = self.__get_selection()
         operation: AbstractDOMOperation = self.__get_operation()
 
-        return DOM(
-            webdriver,
-            selection,
-            operation,
-            self.__wait_time
-        )
-
+        return DOM(webdriver, selection, operation, self.__wait_time)
 
 
 class DataAutomateBrowser(AbstractDOM):
-    def __init__(
-        self,
-        browser: str,
-        dom: list[Mapping[str, Any]],
-        link: str
-    ) -> None:
+    def __init__(self, browser: str, dom: list[Mapping[str, Any]], link: str) -> None:
         self.__webdriver: AbstractDrive = Drives.get_drive(browser)
 
-        self.__dom: list[DataFactoryDOM] = [
-            DataFactoryDOM(**d)
-            for d in dom
-        ]
+        self.__dom: list[DataFactoryDOM] = [DataFactoryDOM(**d) for d in dom]
 
         self.__link: str = link
 
@@ -108,8 +97,4 @@ class DataAutomateBrowser(AbstractDOM):
         driver_browser.get(self.__link)
 
         for d in self.__dom:
-            d \
-                .constructor_dom(driver_browser) \
-                .active()
-
-        
+            d.constructor_dom(driver_browser).active()

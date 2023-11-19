@@ -4,7 +4,6 @@ from selenium.webdriver.remote.webelement import WebElement
 from typing import Mapping, Type, Union
 
 
-
 class AbstractDOMSelection(ABC):
     name: str
 
@@ -12,12 +11,11 @@ class AbstractDOMSelection(ABC):
         selection_name: str = self.__class__.name
 
         if type(selection_name) is not str:
-            raise Exception('Operator name is invalid or undefined!')
+            raise Exception("Operator name is invalid or undefined!")
 
     @abstractmethod
     def get_by(self, web: Union[WebDriver, WebElement], identifier: str) -> WebElement:
         pass
-
 
 
 class DOMSelections:

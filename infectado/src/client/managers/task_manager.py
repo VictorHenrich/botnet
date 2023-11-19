@@ -23,29 +23,16 @@ class TaskManager(AbstractCommand):
 
     def execute(self, data: Optional[Any], *task_name: Sequence[str]) -> None:
         todo_list: list[Task] = [
-            task
-            for task in self.__tasks.values()
-            if task.name in task_name
+            task for task in self.__tasks.values() if task.name in task_name
         ]
 
         threads: list[Thread] = [
             Thread(
                 target=task.execute,
-                args=(
-                    task.data_class(**data) \
-                        if data and task.data_class \
-                        else data
-                    ,
-                )
+                args=(task.data_class(**data) if data and task.data_class else data,),
             )
-
             for task in todo_list
         ]
 
         [thread.start() for thread in threads]
         [thread.join() for thread in threads]
-
-
-    
-
-    

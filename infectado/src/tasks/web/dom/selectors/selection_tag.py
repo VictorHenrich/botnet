@@ -6,14 +6,11 @@ from typing import Union
 from .. import AbstractDOMSelection, DOMSelections
 
 
-
-
 class DOMSelectionByTag(AbstractDOMSelection):
     name: str = "tag"
-    
+
     def get_by(self, web: Union[WebDriver, WebElement], identifier: str) -> WebElement:
         return web.find_element(By.TAG_NAME, identifier)
-
 
 
 DOMSelections.insert_selection(DOMSelectionByTag)

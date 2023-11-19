@@ -4,7 +4,6 @@ from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.remote.webdriver import WebDriver
 
 
-
 class AbstractDOMOperation(ABC):
     name: str
     parameter_type: Optional[Type[Any]] = None
@@ -13,10 +12,12 @@ class AbstractDOMOperation(ABC):
         operator_name: str = self.__class__.name
 
         if type(operator_name) is not str:
-            raise Exception('Operator name is invalid or undefined!')
+            raise Exception("Operator name is invalid or undefined!")
 
     @abstractmethod
-    def operate(self, web_driver: WebDriver, web_element: WebElement, param: Any) -> None:
+    def operate(
+        self, web_driver: WebDriver, web_element: WebElement, param: Any
+    ) -> None:
         pass
 
     def start(self, web_driver: WebDriver, web_element: WebElement, param: Any) -> None:
@@ -32,9 +33,6 @@ class AbstractDOMOperation(ABC):
                 return
 
         self.operate(web_driver, web_element, param)
-
-
-
 
 
 class DOMOperations:

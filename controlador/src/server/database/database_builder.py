@@ -4,6 +4,7 @@ from typing import Optional, Union
 import urllib.parse
 from .database import Database
 
+
 @dataclass
 class DatabaseBuilder:
     dialect: str = ""
@@ -52,11 +53,6 @@ class DatabaseBuilder:
         return self
 
     def build(self) -> Database:
+        url: str = f"{self.dialect}+{self.driver}://{self.username}:{self.password}@{self.host}:{self.port}/{self.dbname}"
 
-        url: str = \
-            f"{self.dialect}+{self.driver}://{self.username}:{self.password}@{self.host}:{self.port}/{self.dbname}"
-
-        return Database(
-            url,
-            self.debug
-        )
+        return Database(url, self.debug)

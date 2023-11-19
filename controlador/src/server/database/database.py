@@ -5,17 +5,11 @@ from sqlalchemy.orm.decl_api import declarative_base, DeclarativeMeta
 from typing import Any, Mapping, Type
 
 
-
-
 class Database:
-    def __init__(
-        self,
-        url: str,
-        debug: bool = False
-    ) -> None:
+    def __init__(self, url: str, debug: bool = False) -> None:
         self.__engine: Engine = create_engine(url, echo=debug)
 
-        self.__Model: Type[DeclarativeMeta] = declarative_base(self.__engine)
+        self.__Model: Type[DeclarativeMeta] = declarative_base()
 
     @property
     def engine(self) -> Engine:
@@ -34,7 +28,6 @@ class Database:
 
     def migrate(self, drop_tables: bool = False) -> None:
         if drop_tables:
-            self.__Model.metadata.drop_all()
+            self.__Model.metadata.drop_all(self.__engine)
 
-        self.__Model.metadata.create_all()
-
+        self.__Model.metadata.create_all(self.__engine)

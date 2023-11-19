@@ -1,25 +1,17 @@
-from aiohttp.web import (
-    Application, 
-    RouteTableDef, 
-    run_app
-)
+from aiohttp.web import Application, RouteTableDef, run_app
 from typing import Mapping, Any, Sequence, Union
 
 
 class HttpServer:
-    __props_run_server: Sequence[str] = 'host', 'port'
+    __props_run_server: Sequence[str] = "host", "port"
 
     def __init__(
-        self,
-        host: str,
-        port: Union[int, str],
-        secret_key: str,
-        debug: bool = False
+        self, host: str, port: Union[int, str], secret_key: str, debug: bool = False
     ) -> None:
         self.__configs: Mapping[str, Any] = {
             "host": host,
             "port": port,
-            "secret_key": secret_key
+            "secret_key": secret_key,
         }
 
         self.__app: Application = Application(debug=debug)

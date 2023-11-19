@@ -2,7 +2,6 @@ from typing import Mapping
 from .abstract_drive import AbstractDrive
 
 
-
 class Drives:
     __mapping_drives: Mapping[str, AbstractDrive] = {}
 
@@ -15,4 +14,4 @@ class Drives:
         try:
             return cls.__mapping_drives[name]
         except KeyError:
-            raise ValueError('Drive não localizado!')
+            raise ValueError("Drive não localizado!")

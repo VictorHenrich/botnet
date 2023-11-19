@@ -6,11 +6,10 @@ from .abstract_drive import AbstractDrive
 from .drives import Drives
 
 
-
 class DriveChrome(AbstractDrive):
     name_executable = "chromedriver.exe"
     name = "chrome"
     class_ = Chrome
-    
+
 
 Drives.append_drive(DriveChrome)

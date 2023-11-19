@@ -6,11 +6,10 @@ from .abstract_drive import AbstractDrive
 from .drives import Drives
 
 
-
 class DriveEdge(AbstractDrive):
     name_executable = "msedgedriver.exe"
     name = "edge"
     class_ = Edge
-    
+
 
 Drives.append_drive(DriveEdge)

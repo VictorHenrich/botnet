@@ -8,10 +8,7 @@ from .websocket import SocketServer
 
 class Server:
     def __init__(
-        self,
-        database: Database,
-        http: HttpServer,
-        websocket: SocketServer 
+        self, database: Database, http: HttpServer, websocket: SocketServer
     ) -> None:
         self.__http: HttpServer = http
         self.__websocket: SocketServer = websocket
@@ -43,17 +40,14 @@ class Server:
                 asyncio.run(result)
 
 
-
-
-
 class ServerFactory:
     @classmethod
     def __create_http(cls, data: Mapping[str, Any]) -> HttpServer:
         server: HttpServer = HttpServer(
-            host=data['host'],
-            port=data['port'],
-            secret_key=data.get('secret_key'),
-            debug=data.get('debug') or False
+            host=data["host"],
+            port=data["port"],
+            secret_key=data.get("secret_key"),
+            debug=data.get("debug") or False,
         )
 
         return server
@@ -66,30 +60,22 @@ class ServerFactory:
 
     @classmethod
     def __create_database(cls, data: Mapping[str, Any]) -> Database:
-        return DatabaseBuilder()\
-                    .set_host(data['host'])\
-                    .set_port(data['port'])\
-                    .set_dbname(data['dbname'])\
-                    .set_credentials(data['username'], data['password'])\
-                    .set_driver(data['driver'])\
-                    .set_dialect(data['dialect'])\
-                    .set_debug(data.get('debug') or False)\
-                    .build()
-                    
+        return (
+            DatabaseBuilder()
+            .set_host(data["host"])
+            .set_port(data["port"])
+            .set_dbname(data["dbname"])
+            .set_credentials(data["username"], data["password"])
+            .set_driver(data["driver"])
+            .set_dialect(data["dialect"])
+            .set_debug(data.get("debug") or False)
+            .build()
+        )
+
     @classmethod
-    def create(
-        cls,
-        http: Mapping[str, Any],
-        database: Mapping[str, Any]
-    ) -> Server:
+    def create(cls, http: Mapping[str, Any], database: Mapping[str, Any]) -> Server:
         http_server: HttpServer = cls.__create_http(http)
         database_server: Database = cls.__create_database(database)
         websocket_server: SocketServer = cls.__create_websocket(http_server)
 
-        return Server(
-            database_server,
-            http_server,
-            websocket_server
-        )
-
-                
+        return Server(database_server, http_server, websocket_server)

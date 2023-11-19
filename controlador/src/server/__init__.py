@@ -1,1 +1,1 @@
-from.server import Server, ServerFactory
+from .server import Server, ServerFactory

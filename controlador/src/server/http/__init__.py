@@ -3,7 +3,7 @@ from .responses import (
     ResponseFailure,
     ResponseNotFound,
     ResponseSuccess,
-    ResponseInauthorized
+    ResponseInauthorized,
 )
 from .controller import Controller
 from .middleware import Middleware

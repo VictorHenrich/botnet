@@ -2,7 +2,6 @@ from typing import Any, Callable, Coroutine, Mapping, Sequence
 import asyncio
 
 
-
 class UtilAsync:
     @classmethod
     def run(cls, function: Callable[[Any], Coroutine]):
@@ -10,5 +9,3 @@ class UtilAsync:
             return asyncio.run(function(*args, **kwargs))
 
         return wrapper
-
-        

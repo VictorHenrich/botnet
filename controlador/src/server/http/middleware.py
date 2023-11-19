@@ -5,7 +5,9 @@ from aiohttp.web import Request, Response
 
 class Middleware(ABC):
     @abstractclassmethod
-    async def call(cls, request: Request, *args: Sequence[Any], **kwargs: Mapping[str, Any]) -> Optional[Mapping[str, Any]]:
+    async def call(
+        cls, request: Request, *args: Sequence[Any], **kwargs: Mapping[str, Any]
+    ) -> Optional[Mapping[str, Any]]:
         pass
 
     @abstractclassmethod
@@ -19,11 +21,9 @@ class Middleware(ABC):
                 try:
                     object_request: Request = a[0].request
 
-                    result: Optional[Mapping[str, Any]] = \
-                        await cls.call(
-                            object_request,
-                            *args
-                        )
+                    result: Optional[Mapping[str, Any]] = await cls.call(
+                        object_request, *args
+                    )
 
                 except Exception as error:
                     return await cls.catch(object_request, error)

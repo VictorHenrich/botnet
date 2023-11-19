@@ -5,10 +5,7 @@ from selenium.webdriver.remote.webelement import WebElement
 from time import sleep
 from dataclasses import dataclass
 from abc import ABC, abstractmethod
-from . import (
-    AbstractDOMSelection,
-    AbstractDOMOperation
-)
+from . import AbstractDOMSelection, AbstractDOMOperation
 
 
 @dataclass
@@ -35,24 +32,12 @@ class DOM(AbstractDOM):
     selector: DOMSelector
     operator: DOMOperator
     wait_time: float = 0
-    
-    def active(self) -> None:
-        element: WebElement = \
-            self.selector \
-                .type \
-                .get_by(self.webdriver, self.selector.value)
 
-        self.operator\
-            .type\
-            .start(
-                self.webdriver,
-                element,
-                self.operator.param
-            )
+    def active(self) -> None:
+        element: WebElement = self.selector.type.get_by(
+            self.webdriver, self.selector.value
+        )
+
+        self.operator.type.start(self.webdriver, element, self.operator.param)
 
         sleep(self.wait_time)
-
-        
-
-
-    

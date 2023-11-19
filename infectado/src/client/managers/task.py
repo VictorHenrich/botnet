@@ -1,9 +1,6 @@
-
 from typing import Any, Optional, Type
 from .abstract_command import AbstractCommand
 from abc import ABC, abstractmethod
-
-
 
 
 class Task(AbstractCommand, ABC):

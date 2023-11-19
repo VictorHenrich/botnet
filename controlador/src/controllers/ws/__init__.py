@@ -1,4 +1,1 @@
-from . import (
-    bots_controller
-)
-
+from . import bots_controller

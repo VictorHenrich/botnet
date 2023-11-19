@@ -1,3 +1,1 @@
-from . import (
-    controlador_controller
-)
+from . import controlador_controller

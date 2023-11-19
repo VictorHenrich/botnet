@@ -27,10 +27,12 @@ class ModuleManager(AbstractCommand):
 
         self.__modules[task_manager.name] = task_manager
 
-    def execute(self, module_name: str, data: Optional[Any], *task_name: Sequence[str]) -> None:
+    def execute(
+        self, module_name: str, data: Optional[Any], *task_name: Sequence[str]
+    ) -> None:
         for manager in self.__modules.values():
             if manager.name.upper() == module_name.upper():
                 manager.execute(data, *task_name)
                 return
 
-        raise Exception('TaskManager not found!')
+        raise Exception("TaskManager not found!")

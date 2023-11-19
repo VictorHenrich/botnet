@@ -1,9 +1,4 @@
+__PAYLOAD_JWT__ = {"user": None, "expired": None}
 
 
-__PAYLOAD_JWT__ = {
-    'user': None,
-    'expired': None
-}
-
-
-__ALGORITHMS_JWT__= "HS256", 
+__ALGORITHMS_JWT__ = ("HS256",)
