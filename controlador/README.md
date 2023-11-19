@@ -3,7 +3,7 @@
 <br>
 <br>
 
-> ## *(POST)* /logar
+> ## *(POST)* /usuario/autenticacao
 
 <br>
 
@@ -51,7 +51,151 @@
 <br>
 <br>
 
-> ## *(POST)* /controlar
+> ## *(POST)* /usuario/cadastro
+
+<br>
+
+### HEADERS
+
+* Method: POST
+* Content-Type: application/json
+
+<br>
+<br>
+ Esta rota é responsável por cadastrar um novo usuário no banco de dados.
+ <br>
+ <br>
+ 
+ | Campo | Tipo | Requerido | Descrição |
+| :------: | :----: | :----: | :---- |
+| email | String | True | Email de acesso |
+| senha | String[] | True | Senha de acesso |
+
+<br>
+
+### EXEMPLO CORPO JSON
+
+ ```
+ {
+	"email": "fulano@gmail.com",
+	"senha": "*******"
+ }
+ ```
+
+<br>
+
+### EXEMPLO RESPOSTA SUCESSO
+
+ ```
+ {
+	"status": 200,
+	"message": "OK"
+}
+ ```
+
+<br>
+<br>
+<br>
+<br>
+
+> ## *(PUT)* /usuario/cadastro
+
+<br>
+
+### HEADERS
+
+* Method: POST
+* Content-Type: application/json
+* Authorization: Bearer <TOKEN>
+
+<br>
+<br>
+ Esta rota é responsável por alterar os dados de um usuário no banco de dados.
+ <br>
+ <br>
+ 
+ | Campo | Tipo | Requerido | Descrição |
+| :------: | :----: | :----: | :---- |
+| email | String | True | Email de acesso |
+| senha | String[] | True | Senha de acesso |
+
+<br>
+
+### EXEMPLO CORPO JSON
+
+ ```
+ {
+	"email": "fulano@gmail.com",
+	"senha": "*******"
+ }
+ ```
+
+<br>
+
+### EXEMPLO RESPOSTA SUCESSO
+
+ ```
+ {
+	"status": 200,
+	"message": "OK"
+}
+ ```
+
+<br>
+<br>
+<br>
+<br>
+
+> ## *(DELETE)* /usuario/cadastro
+
+<br>
+
+### HEADERS
+
+* Method: POST
+* Content-Type: application/json
+* Authorization: Bearer <TOKEN>
+
+<br>
+<br>
+ Esta rota é responsável por excluir os dados de um usuário no banco de dados.
+ <br>
+ <br>
+ 
+ | Campo | Tipo | Requerido | Descrição |
+| :------: | :----: | :----: | :---- |
+| email | String | True | Email de acesso |
+| senha | String[] | True | Senha de acesso |
+
+<br>
+
+### EXEMPLO CORPO JSON
+
+ ```
+ {
+	"email": "fulano@gmail.com",
+	"senha": "*******"
+ }
+ ```
+
+<br>
+
+### EXEMPLO RESPOSTA SUCESSO
+
+ ```
+ {
+	"status": 200,
+	"message": "OK"
+}
+ ```
+
+<br>
+<br>
+<br>
+<br>
+
+
+> ## *(POST)* /bots/controlar
 
 <br>
 
