@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, Text
 from sqlalchemy.dialects.postgresql import UUID
 from uuid import uuid4
 
@@ -14,4 +14,4 @@ class Usuarios(server.database.Model):
         UUID(False), unique=True, nullable=False, default=lambda: str(uuid4())
     )
     email: str = Column(String(200))
-    senha: str = Column(String(50))
+    senha: str = Column(Text)
