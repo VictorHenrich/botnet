@@ -1,1 +1,2 @@
-from . import autenticacao_controller, controle_bots_controller
+from .usuarios_controller import UsuarioController, AutenticacaoController
+from .controle_bots_controller import ControleBotsController
