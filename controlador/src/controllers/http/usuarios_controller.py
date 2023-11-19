@@ -16,7 +16,7 @@ from .bases import AutenticacaoUsuario, CadastroUsuario
 from utils.constantes import __ALGORITHMS_JWT__, __PAYLOAD_JWT__
 
 
-@server.http.routes.view("/usuario")
+@server.http.routes.view("/usuario/cadastro")
 class UsuarioController(Controller):
     @ValidacaoCorpoRequisicaoMiddleware.apply(CadastroUsuario)
     async def post(self, body_request: CadastroUsuario) -> Response:
