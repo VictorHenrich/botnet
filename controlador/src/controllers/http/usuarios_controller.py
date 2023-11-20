@@ -21,9 +21,9 @@ class UsuarioController(Controller):
     @ValidacaoCorpoRequisicaoMiddleware.apply(CadastroUsuario)
     async def post(self, body_request: CadastroUsuario) -> Response:
         with server.database.create_session() as session:
-            senha_criptograda: str = str(
-                bcrypt.hashpw(body_request.senha.encode("utf-8"), bcrypt.gensalt())
-            )
+            senha_criptograda: str = bcrypt.hashpw(
+                body_request.senha.encode("utf-8"), bcrypt.gensalt()
+            ).decode("utf-8")
 
             usuario: Usuarios = Usuarios(
                 email=body_request.email.lower(), senha=senha_criptograda
@@ -35,13 +35,13 @@ class UsuarioController(Controller):
 
         return ResponseSuccess()
 
-    @AutenticacaoMiddlware.apply()
     @ValidacaoCorpoRequisicaoMiddleware.apply(CadastroUsuario)
+    @AutenticacaoMiddlware.apply()
     async def put(self, auth: Usuarios, body_request: CadastroUsuario) -> Response:
         with server.database.create_session() as session:
-            senha_criptograda: str = str(
-                bcrypt.hashpw(body_request.senha.encode("utf-8"), bcrypt.gensalt())
-            )
+            senha_criptograda: str = bcrypt.hashpw(
+                body_request.senha.encode("utf-8"), bcrypt.gensalt()
+            ).decode("utf-8")
 
             auth.email = body_request.email.lower()
 
@@ -70,7 +70,7 @@ class AutenticacaoController(Controller):
         with server.database.create_session() as session:
             usuario_localizado: Usuarios = (
                 session.query(Usuarios)
-                .filter(Usuarios.email == body_request.email)
+                .filter(Usuarios.email == body_request.email.lower())
                 .first()
             )
 

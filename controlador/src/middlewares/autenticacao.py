@@ -34,7 +34,7 @@ class AutenticacaoMiddlware(Middleware):
         with server.database.create_session() as session:
             usuario_localizado: Usuarios = session.query(Usuarios).filter(
                 Usuarios.id_uuid == dados_autenticacao["user"]
-            )
+            ).first()
 
             if not usuario_localizado:
                 raise Exception("Usuário não localizado!")
