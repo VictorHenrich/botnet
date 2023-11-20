@@ -5,7 +5,7 @@ from models import Usuarios
 from .bases import Controle as BaseControle
 
 
-@server.http.routes.view("/bots/controlar")
+@server.http.routes.view("/bots/controle")
 class ControleBotsController(Controller):
     @AutenticacaoMiddlware.apply()
     @ValidacaoCorpoRequisicaoMiddleware.apply(BaseControle)

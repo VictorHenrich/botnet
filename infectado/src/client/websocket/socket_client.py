@@ -30,6 +30,7 @@ class SocketClient:
     def start(self) -> None:
         self.__socket.connect(self.__url, namespaces=self.__namespaces)
         print(f" CLIENT CONNECT IN {self.__url} ".center(100, "-"))
+        input("Ctrl + C: Sair")
 
     def close(self) -> None:
         self.__socket.disconnect()
