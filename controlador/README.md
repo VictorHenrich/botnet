@@ -322,12 +322,29 @@ Neste exemplo, realizaremos a execução de comandos de linha no prompt ou termi
 <br>
 <br>
 
+| Campo | Tipo | Requirido | Descrição |
+| :------: | :----: | :----: | :---- |
+| command | String / String[] | True | Comando(s) a serem executados |
+
  ```
 {
    	"module":"automacao_so",
    	"targets": ["executar_comandos"],
    	"args": {
-   		"command": "ipconfig"
+   		"command": "acho 'Testando print no terminal'"
+   	}
+}
+
+ ```
+<br>
+<br>
+
+ ```
+{
+   	"module":"automacao_so",
+   	"targets": ["executar_comandos"],
+   	"args": {
+   		"command": ["cd C:\Users", "mkdir teste", "cd teste"]
    	}
 }
 
