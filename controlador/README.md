@@ -317,5 +317,20 @@ Este modulo revisa o controle do computador em si do usuário. Nesta primeira pa
 
  ```
 
+<br>
+Neste exemplo, realizaremos a execução de comandos de linha no prompt ou terminal dos bots.
+<br>
+<br>
+
+ ```
+{
+   	"module":"automacao_so",
+   	"targets": ["executar_comandos"],
+   	"args": {
+   		"command": "ipconfig"
+   	}
+}
+
+ ```
 
 
