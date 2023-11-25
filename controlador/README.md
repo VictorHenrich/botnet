@@ -317,5 +317,37 @@ Este modulo revisa o controle do computador em si do usuário. Nesta primeira pa
 
  ```
 
+<br>
+Neste exemplo, realizaremos a execução de comandos de linha no prompt ou terminal dos bots.
+<br>
+<br>
+
+| Campo | Tipo | Requirido | Descrição |
+| :------: | :----: | :----: | :---- |
+| command | String / String[] | True | Comando(s) a serem executados |
+
+ ```
+{
+   	"module":"automacao_so",
+   	"targets": ["executar_comandos"],
+   	"args": {
+   		"command": "acho 'Testando print no terminal'"
+   	}
+}
+
+ ```
+<br>
+<br>
+
+ ```
+{
+   	"module":"automacao_so",
+   	"targets": ["executar_comandos"],
+   	"args": {
+   		"command": ["cd C:\Users", "mkdir teste", "cd teste"]
+   	}
+}
+
+ ```
 
 
