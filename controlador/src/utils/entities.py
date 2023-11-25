@@ -1,9 +1,20 @@
+from typing import Any, Mapping, Optional
 from pydantic import BaseModel, validator
 
 
-class AutenticacaoUsuario(BaseModel):
+class ControlBase(BaseModel):
+    module: str
+    targets: list[str]
+    args: Optional[Mapping[str, Any]] = None
+
+    @validator("targets", pre=True)
+    def tratar_alvos(cls, value: list[str]):
+        return list(set(value))
+
+
+class AuthUserBase(BaseModel):
     email: str
-    senha: str
+    password: str
 
     @validator("email")
     def validar_email(cls, value: str) -> str:
@@ -13,9 +24,9 @@ class AutenticacaoUsuario(BaseModel):
         return value
 
 
-class CadastroUsuario(BaseModel):
+class RegisterUserBase(BaseModel):
     email: str
-    senha: str
+    password: str
 
     @validator("email")
     def validar_email(cls, value: str) -> str:

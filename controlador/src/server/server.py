@@ -1,66 +1,50 @@
-from typing import Callable, Coroutine, Union, Mapping, Any
+from typing import (
+    Callable,
+    Coroutine,
+    Optional,
+    Mapping,
+    Any,
+    List,
+    Awaitable,
+    Sequence,
+    TypeAlias,
+)
 import asyncio
+from threading import Thread
 
 from .http import HttpServer
 from .database import Database, DatabaseBuilder
 from .websocket import SocketServer
 
 
+CallFunctionType: TypeAlias = Callable[[], Optional[Awaitable]]
+
+
 class Server:
-    def __init__(
-        self, database: Database, http: HttpServer, websocket: SocketServer
-    ) -> None:
-        self.__http: HttpServer = http
-        self.__websocket: SocketServer = websocket
-        self.__database: Database = database
-        self.__listeners: list[Callable[[None], None]] = []
+    __http: HttpServer
 
-    @property
-    def http(self) -> HttpServer:
-        return self.__http
+    __websocket: SocketServer
 
-    @property
-    def websocket(self) -> SocketServer:
-        return self.__websocket
+    __database: Database
 
-    @property
-    def database(self) -> Database:
-        return self.__database
+    __listeners: List[CallFunctionType] = []
 
-    def start(self, function: Callable[[None], None]) -> Callable[[None], None]:
-        self.__listeners.append(function)
-
-        return function
-
-    def start_server(self) -> None:
-        for function in self.__listeners:
-            result: Union[Coroutine, None] = function()
-
-            if isinstance(result, Coroutine):
-                asyncio.run(result)
-
-
-class ServerFactory:
     @classmethod
-    def __create_http(cls, data: Mapping[str, Any]) -> HttpServer:
-        server: HttpServer = HttpServer(
+    def __create_http(cls, data: Mapping[str, Any]) -> None:
+        http_server: HttpServer = HttpServer(
             host=data["host"],
             port=data["port"],
-            secret_key=data.get("secret_key"),
+            secret_key=data.get("secret_key", ""),
             debug=data.get("debug") or False,
         )
 
-        return server
+        cls.__http = http_server
+
+        cls.__websocket = SocketServer(http_server)
 
     @classmethod
-    def __create_websocket(cls, http_server: HttpServer) -> SocketServer:
-        server: SocketServer = SocketServer(http_server)
-
-        return server
-
-    @classmethod
-    def __create_database(cls, data: Mapping[str, Any]) -> Database:
-        return (
+    def __create_database(cls, data: Mapping[str, Any]) -> None:
+        cls.__database = (
             DatabaseBuilder()
             .set_host(data["host"])
             .set_port(data["port"])
@@ -73,9 +57,49 @@ class ServerFactory:
         )
 
     @classmethod
-    def create(cls, http: Mapping[str, Any], database: Mapping[str, Any]) -> Server:
-        http_server: HttpServer = cls.__create_http(http)
-        database_server: Database = cls.__create_database(database)
-        websocket_server: SocketServer = cls.__create_websocket(http_server)
+    def init_app(cls, http: Mapping[str, Any], database: Mapping[str, Any]) -> None:
+        cls.__create_http(http)
+        cls.__create_database(database)
 
-        return Server(database_server, http_server, websocket_server)
+    @classmethod
+    @property
+    def http(cls) -> HttpServer:
+        return cls.__http
+
+    @classmethod
+    @property
+    def websocket(cls) -> SocketServer:
+        return cls.__websocket
+
+    @classmethod
+    @property
+    def database(cls) -> Database:
+        return cls.__database
+
+    @classmethod
+    def start(cls, function: Callable[[], None]) -> Callable[[], None]:
+        cls.__listeners.append(function)
+
+        return function
+
+    @classmethod
+    def __handle_function(
+        cls, function: CallFunctionType, event_loop: asyncio.AbstractEventLoop
+    ) -> None:
+        result: Optional[Awaitable] = function()
+
+        if isinstance(result, Coroutine):
+            event_loop.run_until_complete(result)
+
+    @classmethod
+    def start_app(cls) -> None:
+        event_loop: asyncio.AbstractEventLoop = asyncio.get_event_loop()
+
+        threads: Sequence[Thread] = [
+            Thread(target=cls.__handle_function, args=(function, event_loop))
+            for function in cls.__listeners
+        ]
+
+        [thread.start() for thread in threads]
+
+        [thread.join() for thread in threads]

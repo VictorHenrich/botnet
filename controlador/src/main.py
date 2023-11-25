@@ -1,18 +1,18 @@
-from start import server
+from server import Server
 
 
-@server.start
+@Server.start
 def migrate_database():
     import models
 
-    server.database.migrate()
+    Server.database.migrate()
 
 
-@server.start
+@Server.start
 def run_api():
     import controllers
 
-    server.http.start()
+    Server.http.start()
 
 
-server.start_server()
+Server.start_app()

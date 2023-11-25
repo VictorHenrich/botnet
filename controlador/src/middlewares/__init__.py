@@ -1,2 +1,2 @@
-from .autenticacao import AutenticacaoMiddlware
-from .validacao_corpo_requisicao import ValidacaoCorpoRequisicaoMiddleware
+from .authentication import AuthenticationMiddleware
+from .validation_request_body import ValidationRequestBodyMiddleware

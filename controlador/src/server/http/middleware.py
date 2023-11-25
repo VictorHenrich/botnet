@@ -1,28 +1,34 @@
-from abc import ABC, abstractclassmethod
-from typing import Any, Coroutine, Mapping, Optional, Sequence
-from aiohttp.web import Request, Response
+from abc import ABC, abstractmethod
+from typing import Any, Awaitable, Mapping, Optional, Callable
+from aiohttp.web import Request
+
+from .responses import AbstractResponse
 
 
 class Middleware(ABC):
-    @abstractclassmethod
+    @classmethod
+    @abstractmethod
     async def call(
-        cls, request: Request, *args: Sequence[Any], **kwargs: Mapping[str, Any]
+        cls, request: Request, *args: Any, **kwargs: Any
     ) -> Optional[Mapping[str, Any]]:
         pass
 
-    @abstractclassmethod
-    async def catch(cls, request: Request, exception: Exception) -> Response:
+    @classmethod
+    @abstractmethod
+    async def catch(cls, request: Request, exception: Exception) -> AbstractResponse:
         raise exception
 
     @classmethod
-    def apply(cls, *args: Sequence[Any], **kwargs: Mapping[str, Any]) -> Coroutine:
-        def wrapper(function: Coroutine) -> Coroutine:
-            async def w(*a: Sequence[Any], **k: Mapping[str, Any]) -> Response:
+    def apply(cls, *args: Any, **kwargs: Any) -> Callable[[Any], Callable]:
+        def decorator(
+            function: Callable[[Any], Awaitable]
+        ) -> Callable[[Any], Awaitable]:
+            async def wrapper(*a: Any, **k: Any) -> AbstractResponse:
                 try:
                     object_request: Request = a[0].request
 
                     result: Optional[Mapping[str, Any]] = await cls.call(
-                        object_request, *args
+                        object_request, *args, **kwargs
                     )
 
                 except Exception as error:
@@ -31,6 +37,6 @@ class Middleware(ABC):
                 else:
                     return await function(*a, **{**k, **(result or {})})
 
-            return w
+            return wrapper
 
-        return wrapper
+        return decorator

@@ -1,5 +1,7 @@
 from aiohttp.web import Application, RouteTableDef, run_app
-from typing import Mapping, Any, Sequence, Union
+from typing import Sequence, Union
+
+from utils.types import DictType
 
 
 class HttpServer:
@@ -8,7 +10,7 @@ class HttpServer:
     def __init__(
         self, host: str, port: Union[int, str], secret_key: str, debug: bool = False
     ) -> None:
-        self.__configs: Mapping[str, Any] = {
+        self.__configs: DictType = {
             "host": host,
             "port": port,
             "secret_key": secret_key,
@@ -19,7 +21,7 @@ class HttpServer:
         self.__routes: RouteTableDef = RouteTableDef()
 
     @property
-    def configs(self) -> Mapping[str, Any]:
+    def configs(self) -> DictType:
         return self.__configs
 
     @property
@@ -33,7 +35,7 @@ class HttpServer:
     def start(self) -> None:
         self.__app.add_routes(self.__routes)
 
-        c: Mapping[str, Any] = {
+        c: DictType = {
             prop: value
             for prop, value in self.__configs.items()
             if prop in HttpServer.__props_run_server

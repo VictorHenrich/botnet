@@ -1,2 +1,2 @@
-from .usuarios_controller import UsuarioController, AutenticacaoController
-from .controle_bots_controller import ControleBotsController
+from .user_controller import UserController, UserAuthController
+from .bot_controller import BotController

@@ -2,7 +2,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.engine import create_engine, Engine
 from sqlalchemy.orm.session import Session, sessionmaker
 from sqlalchemy.orm.decl_api import declarative_base, DeclarativeMeta
-from typing import Any, Mapping, Type
+from typing import Any, Type
 
 
 class Database:
@@ -19,12 +19,8 @@ class Database:
     def Model(self) -> Type[DeclarativeMeta]:
         return self.__Model
 
-    def create_session(self, **options: Mapping[str, Any]) -> Session:
-        return sessionmaker(
-            bind=self.__engine,
-            class_=Session,
-            **options,
-        )()
+    def create_session(self, **options: Any) -> Session:
+        return sessionmaker(bind=self.__engine, class_=Session, **options)()
 
     def migrate(self, drop_tables: bool = False) -> None:
         if drop_tables:

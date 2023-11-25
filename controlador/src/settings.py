@@ -1,7 +1,8 @@
-from server.utils.env import Env
+from typing import Mapping, Optional
+from utils.env import EnvUtils
 
 
-data_env: dict = Env.get_values()
+data_env: Mapping[str, Optional[str]] = EnvUtils.get_values()
 
 
 __HTTP__ = {

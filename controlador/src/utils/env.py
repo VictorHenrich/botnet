@@ -3,7 +3,7 @@ from dotenv import dotenv_values
 from typing import Mapping, Union, Optional, Sequence
 
 
-class Env:
+class EnvUtils:
     __path_default: Sequence[Path] = list(Path.cwd().glob("*.env"))
 
     @classmethod
@@ -15,4 +15,4 @@ class Env:
         if not path_.exists():
             raise Exception("Não foi possível localizar arquivo .env!")
 
-        return dotenv_values(str(path_))
+        return dotenv_values(str(path_)) or {}

@@ -2,10 +2,10 @@ from sqlalchemy import Column, Integer, String, Text
 from sqlalchemy.dialects.postgresql import UUID
 from uuid import uuid4
 
-from start import server
+from server import Server
 
 
-class Usuarios(server.database.Model):
+class User(Server.database.Model):
     __tablename__: str = "usuarios"
     id: int = Column(
         Integer, primary_key=True, nullable=False, unique=True, autoincrement=True
@@ -14,4 +14,4 @@ class Usuarios(server.database.Model):
         UUID(False), unique=True, nullable=False, default=lambda: str(uuid4())
     )
     email: str = Column(String(200))
-    senha: str = Column(Text)
+    password: str = Column(Text)

@@ -1,5 +1,5 @@
 from .responses import (
-    Response,
+    AbstractResponse,
     ResponseFailure,
     ResponseNotFound,
     ResponseSuccess,
