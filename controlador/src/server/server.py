@@ -55,12 +55,7 @@ class Server:
             .set_debug(data.get("debug") or False)
             .build()
         )
-
-    @classmethod
-    def init_app(cls, http: Mapping[str, Any], database: Mapping[str, Any]) -> None:
-        cls.__create_http(http)
-        cls.__create_database(database)
-
+    
     @classmethod
     @property
     def http(cls) -> HttpServer:
@@ -77,12 +72,6 @@ class Server:
         return cls.__database
 
     @classmethod
-    def start(cls, function: Callable[[], None]) -> Callable[[], None]:
-        cls.__listeners.append(function)
-
-        return function
-
-    @classmethod
     def __handle_function(
         cls, function: CallFunctionType, event_loop: asyncio.AbstractEventLoop
     ) -> None:
@@ -92,14 +81,21 @@ class Server:
             event_loop.run_until_complete(result)
 
     @classmethod
+    def init_app(cls, http: Mapping[str, Any], database: Mapping[str, Any]) -> None:
+        cls.__create_http(http)
+        cls.__create_database(database)
+
+    @classmethod
+    def start(cls, function: Callable[[], None]) -> Callable[[], None]:
+        cls.__listeners.append(function)
+
+        return function
+
+    @classmethod
     def start_app(cls) -> None:
         event_loop: asyncio.AbstractEventLoop = asyncio.get_event_loop()
 
-        threads: Sequence[Thread] = [
-            Thread(target=cls.__handle_function, args=(function, event_loop))
+        [
+            cls.__handle_function(function, event_loop)
             for function in cls.__listeners
         ]
-
-        [thread.start() for thread in threads]
-
-        [thread.join() for thread in threads]

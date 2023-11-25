@@ -1,1 +1,1 @@
-from . import bots_controller
+from .bot_controller import BotController

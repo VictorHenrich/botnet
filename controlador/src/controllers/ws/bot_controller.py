@@ -4,6 +4,6 @@ from server.websocket import Controller
 
 
 @Server.websocket.on("/bots")
-class BotsController(Controller):
+class BotController(Controller):
     async def on_connect(self, socketid: str, environ: Type) -> None:
         pass

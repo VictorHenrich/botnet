@@ -1,4 +1,5 @@
 from server import Server
+from settings import __DATABASE__, __HTTP__
 
 
 @Server.start
@@ -14,5 +15,7 @@ def run_api():
 
     Server.http.start()
 
+
+Server.init_app(__HTTP__, __DATABASE__)
 
 Server.start_app()
